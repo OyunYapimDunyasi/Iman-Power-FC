@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>İMAN POWER FC | Dijital Karargah</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #040b16;
+      --bg-card: #0b172a;
+      --bg-input: #11223d;
+      --silver: #d4dce8;
+      --silver-muted: #8b9bb4;
+      --accent: #38bdf8;
+      --gold: #f5b942;
+      --danger: #ef4444;
+      --success: #22c55e;
+      --border: rgba(212, 220, 232, 0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+    body {
+      background: radial-gradient(circle at top, #102444 0%, var(--bg-dark) 70%);
+      color: var(--silver);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(4,11,22,0.9));
+      padding: 22px 20px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-img {
+      width: 92px;
+      height: 92px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid var(--silver);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 1.35rem;
+      letter-spacing: 1.5px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      font-size: 0.82rem;
+      color: var(--silver-muted);
+      margin-top: 4px;
+    }
+
+    .content { padding: 20px; }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      background: var(--bg-input);
+      padding: 5px;
+      border-radius: 12px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 9px 6px;
+      border: none;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--silver-muted);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #1d4ed8, #0284c7);
+      color: #fff;
+    }
+
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 0.8rem; color: var(--silver-muted); margin-bottom: 5px; }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: #fff;
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    input:focus, textarea:focus { border-color: var(--accent); }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #fff;
+    }
+
+    .btn-primary:hover { filter: brightness(1.1); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--silver);
+      margin-top: 8px;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid var(--danger);
+      color: #fca5a5;
+      margin-top: 8px;
+    }
+
+    .status-msg {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      display: none;
+    }
+
+    .status-msg.show { display: block; }
+    .status-msg.error { background: rgba(239, 68, 68, 0.18); border: 1px solid var(--danger); color: #fecaca; }
+    .status-msg.success { background: rgba(34, 197, 94, 0.18); border: 1px solid var(--success); color: #bbf7d0; }
+
+    .nav-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .nav-item {
+      padding: 9px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--silver-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .nav-item.active {
+      background: var(--silver);
+      color: var(--bg-dark);
+      border-color: var(--silver);
+    }
+
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .msg {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 9px 12px;
+      border-radius: 10px;
+    }
+
+    .msg.admin-msg {
+      border-color: var(--gold);
+      background: rgba(245, 185, 66, 0.08);
+    }
+
+    .msg-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--accent);
+      margin-bottom: 3px;
+      font-weight: 700;
+    }
+
+    .msg.admin-msg .msg-head { color: var(--gold); }
+    .msg-body { font-size: 0.9rem; color: #fff; word-break: break-word; }
+
+    .chat-form { display: flex; gap: 8px; }
+    .chat-form input { flex: 1; }
+    .chat-form button { width: auto; padding: 0 18px; }
+
+    .squad-list { display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; }
+    .squad-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 11px;
+    }
+    .badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.16);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .hidden { display: none !important; }
+    .top-user-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--silver-muted);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="İman Power FC Logo" class="logo-img" onerror="this.style.display='none'" />
+      <h1>İMAN POWER FC</h1>
+      <p>2024 • Disiplin • İnanç • Güç</p>
+    </div>
+
+    <div class="content">
+      <!-- GİRİŞ / KAYIT EKRANI -->
+      <div id="authSection">
+        <div class="tabs">
+          <button class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Giriş Yap</button>
+          <button class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Kayıt Ol</button>
+        </div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Gmail Adresi</label>
+            <input type="email" id="loginEmail" required placeholder="ornek@gmail.com" />
+          </div>
+          <div class="form-group">
+            <label>Şifre</label>
+            <input type="password" id="loginPassword" required placeholder="••••••••" />
+          </div>
+          <button type="submit" class="btn btn-primary">Karargaha Giriş Yap</button>
+        </form>
+
+        <form id="registerForm" class="hidden">
+          <div class="form-group">
+            <label>İsim Soyisim / Takma Ad *</label>
+            <input type="text" id="regName" required placeholder="Adını yaz" />
+          </div>
+          <div class="form-group">
+            <label>Gmail Adresi *</label>
+            <input type="email" id="regEmail" required placeholder="ornek@gmail.com" />
+          </div>
+          <div class="form-group">
+            <label>Şifre (En az 6 karakter) *</label>
+            <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" />
+          </div>
+          <div class="form-group">
+            <label>Telefon Numarası (Telefonu olmayan boş bırakabilir)</label>
+            <input type="tel" id="regPhone" placeholder="05xx xxx xx xx (İsteğe bağlı)" />
+          </div>
+          <button type="submit" class="btn btn-primary">Kayıt Ol ve Doğrulama Gönder</button>
+        </form>
+
+        <div id="authStatus" class="status-msg"></div>
+      </div>
+
+      <!-- ANA UYGULAMA EKRANI -->
+      <div id="appSection" class="hidden">
+        <div class="top-user-bar">
+          <span id="activeUserLabel">Oyuncu</span>
+          <button class="nav-item" style="padding:4px 10px;" onclick="logoutUser()">Çıkış</button>
+        </div>
+
+        <div class="nav-bar">
+          <button class="nav-item active" id="navChat" onclick="switchAppTab('chat')">💬 Sohbet</button>
+          <button class="nav-item" id="navSquad" onclick="switchAppTab('squad')">⚽ Kadro (9)</button>
+          <button class="nav-item" id="navAdmin" onclick="switchAppTab('admin')">🛡️ Yönetici</button>
+        </div>
+
+        <!-- SOHBET -->
+        <div id="viewChat">
+          <div class="chat-box" id="chatBox"></div>
+          <form class="chat-form" id="chatForm">
+            <input type="text" id="chatInput" placeholder="Takıma mesaj yaz..." required />
+            <button type="submit" class="btn btn-primary">Gönder</button>
+          </form>
+        </div>
+
+        <!-- 9 KİŞİLİK KADRO -->
+        <div id="viewSquad" class="hidden">
+          <div class="squad-list" id="squadList"></div>
+        </div>
+
+        <!-- YÖNETİCİ PANELİ -->
+        <div id="viewAdmin" class="hidden">
+          <div id="adminLockBox">
+            <div class="form-group">
+              <label>Yönetici Şifresi</label>
+              <input type="password" id="adminPassInput" placeholder="Yönetici şifresini gir" />
+            </div>
+            <button class="btn btn-primary" onclick="unlockAdmin()">Yönetici Panelini Aç</button>
+          </div>
+
+          <div id="adminControls" class="hidden">
+            <p style="font-size:0.85rem; color:var(--gold); margin-bottom:10px;">✔ Yönetici Yetkisi Aktif</p>
+            <button class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
+            <div style="margin-top:14px;">
+              <label>Kayıtlı Oyuncular & Telefonlar</label>
+              <div class="squad-list" id="adminUsersList"></div>
+            </div>
+          </div>
+          <div id="adminStatus" class="status-msg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      sendEmailVerification,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      set,
+      get,
+      push,
+      onValue,
+      remove
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5C-gWanzz8nuxipdISUELcpbTDMG7Gx0",
+      authDomain: "iman-power-fc.firebaseapp.com",
+      databaseURL: "https://iman-power-fc-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "iman-power-fc",
+      storageBucket: "iman-power-fc.firebasestorage.app",
+      messagingSenderId: "1032547294303",
+      appId: "1:1032547294303:web:419d32c27f6f16dd220fea",
+      measurementId: "G-2DF2T5ETB6"
+    };
+
+    const EMAILJS_PUBLIC_KEY = "jRukwmEqAxg2KHhxg";
+    const EMAILJS_SERVICE_ID = "service_u97ob8e";
+    const EMAILJS_TEMPLATE_ID = "template_uvckn6c";
+    const ADMIN_SECRET_CODE = "IPFC2026";
+
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const CORE_SQUAD_9 = [
+      { name: "1. Oyuncu (Kaptan)", role: "Ana Kadro" },
+      { name: "2. Oyuncu", role: "Ana Kadro" },
+      { name: "3. Oyuncu", role: "Ana Kadro" },
+      { name: "4. Oyuncu", role: "Ana Kadro" },
+      { name: "5. Oyuncu", role: "Ana Kadro" },
+      { name: "6. Oyuncu", role: "Ana Kadro" },
+      { name: "7. Oyuncu", role: "Ana Kadro" },
+      { name: "8. Oyuncu", role: "Ana Kadro" },
+      { name: "9. Oyuncu", role: "Ana Kadro" }
+    ];
+
+    let currentProfile = null;
+    let isAdminUnlocked = false;
+
+    function showStatus(elId, message, type = "success") {
+      const el = document.getElementById(elId);
+      el.textContent = message;
+      el.className = `status-msg show ${type}`;
+    }
+
+    window.switchAuthTab = (tab) => {
+      const isLogin = tab === "login";
+      document.getElementById("tabLogin").classList.toggle("active", isLogin);
+      document.getElementById("tabRegister").classList.toggle("active", !isLogin);
+      document.getElementById("loginForm").classList.toggle("hidden", !isLogin);
+      document.getElementById("registerForm").classList.toggle("hidden", isLogin);
+      document.getElementById("authStatus").className = "status-msg";
+    };
+
+    window.switchAppTab = (tab) => {
+      ["chat", "squad", "admin"].forEach((t) => {
+        document.getElementById("nav" + t[0].toUpperCase() + t.slice(1)).classList.toggle("active", t === tab);
+        document.getElementById("view" + t[0].toUpperCase() + t.slice(1)).classList.toggle("hidden", t !== tab);
+      });
+    };
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("regName").value.trim();
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const phoneInput = document.getElementById("regPhone").value.trim();
+      const phone = phoneInput ? phoneInput : "Telefon Yok";
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(cred.user);
+
+        await set(ref(db, `users/${cred.user.uid}`), {
+          uid: cred.user.uid,
+          name,
+          email,
+          phone,
+          createdAt: new Date().toLocaleString("tr-TR")
+        });
+
+        await signOut(auth);
+        showStatus(
+          "authStatus",
+          "Kayıt başarılı! Gmail kutuna doğrulama linki gönderildi. Linke tıkladıktan sonra giriş yapabilirsin.",
+          "success"
+        );
+        e.target.reset();
+      } catch (err) {
+        showStatus("authStatus", "Kayıt hatası: " + err.message, "error");
+      }
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+
+        if (!cred.user.emailVerified) {
+          await signOut(auth);
+          showStatus(
+            "authStatus",
+            "E-postan henüz doğrulanmamış! Lütfen Gmail kutundaki doğrulama linkine tıkla.",
+            "error"
+          );
+          return;
+        }
+
+        const snap = await get(ref(db, `users/${cred.user.uid}`));
+        const profile = snap.val() || {
+          name: email.split("@")[0],
+          email,
+          phone: "Telefon Yok"
+        };
+
+        try {
+          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+            to_email: profile.email,
+            player_name: profile.name,
+            player_phone: profile.phone,
+            login_time: new Date().toLocaleString("tr-TR")
+          });
+        } catch (mailErr) {
+          console.warn("Mail gönderim uyarısı:", mailErr);
+        }
+
+        currentProfile = profile;
+        enterApp(profile);
+      } catch (err) {
+        showStatus("authStatus", "Giriş hatası: E-posta veya şifre hatalı.", "error");
+      }
+    });
+
+    function enterApp(profile) {
+      document.getElementById("authSection").classList.add("hidden");
+      document.getElementById("appSection").classList.remove("hidden");
+      document.getElementById("activeUserLabel").textContent = `${profile.name} (${profile.phone})`;
+      renderSquad();
+      listenChat();
+      listenUsersForAdmin();
+    }
+
+    window.logoutUser = async () => {
+      isAdminUnlocked = false;
+      document.getElementById("adminLockBox").classList.remove("hidden");
+      document.getElementById("adminControls").classList.add("hidden");
+      await signOut(auth);
+      document.getElementById("appSection").classList.add("hidden");
+      document.getElementById("authSection").classList.remove("hidden");
+    };
+
+    document.getElementById("chatForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("chatInput");
+      const text = input.value.trim();
+      if (!text || !currentProfile) return;
+
+      await push(ref(db, "messages"), {
+        sender: currentProfile.name,
+        isAdmin: isAdminUnlocked,
+        text,
+        time: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })
+      });
+      input.value = "";
+    });
+
+    function listenChat() {
+      onValue(ref(db, "messages"), (snapshot) => {
+        const box = document.getElementById("chatBox");
+        box.innerHTML = "";
+        const data = snapshot.val();
+        if (!data) {
+          box.innerHTML = '<p style="font-size:0.82rem; color:var(--silver-muted);">Henüz mesaj yok. İlk mesajı sen at!</p>';
+          return;
+        }
+        Object.values(data).forEach((m) => {
+          const div = document.createElement("div");
+          div.className = `msg ${m.isAdmin ? "admin-msg" : ""}`;
+          div.innerHTML = `
+            <div class="msg-head">
+              <span>${m.isAdmin ? "🛡️ " : ""}${m.sender}</span>
+              <span>${m.time || ""}</span>
+            </div>
+            <div class="msg-body">${escapeHtml(m.text)}</div>
+          `;
+          box.appendChild(div);
+        });
+        box.scrollTop = box.scrollHeight;
+      });
+    }
+
+    function renderSquad() {
+      const list = document.getElementById("squadList");
+      list.innerHTML = "";
+      CORE_SQUAD_9.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "squad-card";
+        card.innerHTML = `<span>${p.name}</span><span class="badge">${p.role}</span>`;
+        list.appendChild(card);
+      });
+    }
+
+    window.unlockAdmin = () => {
+      const pass = document.getElementById("adminPassInput").value;
+      if (pass === ADMIN_SECRET_CODE) {
+        isAdminUnlocked = true;
+        document.getElementById("adminLockBox").classList.add("hidden");
+        document.getElementById("adminControls").classList.remove("hidden");
+        showStatus("adminStatus", "Yönetici paneli açıldı.", "success");
+      } else {
+        showStatus("adminStatus", "Hatalı yönetici şifresi!", "error");
+      }
+    };
+
+    window.clearAllChat = async () => {
+      if (!isAdminUnlocked) return;
+      await remove(ref(db, "messages"));
+      showStatus("adminStatus", "Tüm sohbet mesajları silindi.", "success");
+    };
+
+    function listenUsersForAdmin() {
+      onValue(ref(db, "users"), (snapshot) => {
+        const list = document.getElementById("adminUsersList");
+        list.innerHTML = "";
+        const data = snapshot.val();
+        if (!data) return;
+        Object.values(data).forEach((u) => {
+          const card = document.createElement("div");
+          card.className = "squad-card";
+          card.innerHTML = `
+            <div>
+              <strong style="font-size:0.88rem;">${u.name}</strong>
+              <div style="font-size:0.75rem; color:var(--silver-muted);">${u.email}</div>
+            </div>
+            <span class="badge">${u.phone}</span>
+          `;
+          list.appendChild(card);
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user && user.emailVerified) {
+        const snap = await get(ref(db, `users/${user.uid}`));
+        const profile = snap.val() || { name: user.email, email: user.email, phone: "Telefon Yok" };
+        currentProfile = profile;
+        enterApp(profile);
+      }
+    });
+  </script>
+</body>
+</html>
