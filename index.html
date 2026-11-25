@@ -8,9 +8,9 @@
   <style>
     :root {
       --bg-dark: #030812;
-      --bg-panel: rgba(9, 19, 36, 0.86);
-      --bg-card: rgba(16, 32, 58, 0.78);
-      --bg-input: rgba(11, 24, 45, 0.92);
+      --bg-panel: rgba(9, 19, 36, 0.9);
+      --bg-card: rgba(16, 32, 58, 0.82);
+      --bg-input: rgba(11, 24, 45, 0.95);
       --silver: #e2e8f0;
       --silver-muted: #94a3b8;
       --accent: #38bdf8;
@@ -28,99 +28,104 @@
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       background:
-        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.24), transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.16), transparent 40%),
+        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.22), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.14), transparent 40%),
         linear-gradient(180deg, #061124 0%, var(--bg-dark) 100%);
       color: var(--silver);
       min-height: 100vh;
-      width: 100%;
+      font-size: clamp(13px, 0.92vw, 15px);
     }
 
     .version-badge {
       position: fixed;
-      top: 14px;
-      left: 14px;
+      top: 10px;
+      left: 10px;
       z-index: 1000;
-      background: rgba(15, 29, 53, 0.94);
+      background: rgba(15, 29, 53, 0.95);
       color: #fff;
       border: 1px solid rgba(56, 189, 248, 0.45);
-      padding: 6px 13px;
+      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.8px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      letter-spacing: 0.6px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
     }
 
-    /* GİRİŞ / KAYIT TAM EKRAN DÜZENİ */
+    /* GİRİŞ / KAYIT */
     .auth-wrapper {
       min-height: 100vh;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 24px;
+      padding: 14px;
     }
 
     .auth-box {
       width: 100%;
-      max-width: 480px;
+      max-width: 420px;
       background: var(--bg-panel);
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(14px);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 28px 24px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
     }
 
     .brand-header {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
 
     .logo-img {
-      width: 104px;
-      height: 104px;
+      width: clamp(68px, 8vw, 84px);
+      height: clamp(68px, 8vw, 84px);
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid var(--silver);
-      box-shadow: 0 0 28px rgba(56, 189, 248, 0.32);
-      margin-bottom: 12px;
+      box-shadow: 0 0 22px rgba(56, 189, 248, 0.3);
+      margin-bottom: 8px;
       display: inline-block;
     }
 
     .logo-fallback {
-      width: 104px;
-      height: 104px;
+      width: 76px;
+      height: 76px;
       border-radius: 50%;
       border: 2px solid var(--silver);
       background: linear-gradient(135deg, #1d4ed8, #071326);
       color: #fff;
       font-weight: 900;
-      font-size: 1.4rem;
+      font-size: 1.15rem;
       letter-spacing: 2px;
       display: none;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 12px;
+      margin: 0 auto 8px;
     }
 
     .brand-header h1 {
-      font-size: 1.5rem;
+      font-size: clamp(1.15rem, 1.5vw, 1.35rem);
       font-weight: 800;
-      letter-spacing: 1.8px;
+      letter-spacing: 1.4px;
       color: #fff;
     }
 
     .brand-header p {
-      font-size: 0.85rem;
+      font-size: 0.78rem;
       color: var(--silver-muted);
-      margin-top: 4px;
+      margin-top: 3px;
     }
 
-    /* TAM EKRAN UYGULAMA KABUĞU */
+    /* UYGULAMA KABUĞU */
     .app-shell {
       min-height: 100vh;
       width: 100%;
@@ -130,15 +135,15 @@
 
     .topbar {
       width: 100%;
-      background: rgba(8, 17, 33, 0.92);
-      backdrop-filter: blur(14px);
+      background: rgba(8, 17, 33, 0.94);
+      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 24px 12px 68px;
+      padding: 8px 14px 8px 54px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 10px;
       position: sticky;
       top: 0;
       z-index: 500;
@@ -147,45 +152,52 @@
     .topbar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      min-width: 0;
     }
 
     .topbar-logo {
-      width: 44px;
-      height: 44px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       object-fit: cover;
       border: 1.5px solid var(--silver);
+      flex-shrink: 0;
     }
 
     .topbar-title {
-      font-size: 1.05rem;
+      font-size: 0.92rem;
       font-weight: 800;
       color: #fff;
-      letter-spacing: 1px;
+      letter-spacing: 0.8px;
+      white-space: nowrap;
     }
 
     .topbar-sub {
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       color: var(--silver-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
     }
 
     .nav-tabs {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 6px;
     }
 
     .nav-btn {
-      padding: 9px 15px;
-      border-radius: 11px;
+      padding: 7px 12px;
+      border-radius: 9px;
       border: 1px solid var(--border);
       background: var(--bg-input);
       color: var(--silver-muted);
       font-weight: 700;
-      font-size: 0.86rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.18s;
     }
 
     .nav-btn:hover {
@@ -197,41 +209,41 @@
       background: linear-gradient(135deg, var(--accent-2), var(--accent));
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
     }
 
     .user-area {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 0.84rem;
+      gap: 8px;
+      font-size: 0.78rem;
     }
 
     .admin-pill {
       background: rgba(251, 191, 36, 0.16);
       border: 1px solid var(--gold);
       color: var(--gold);
-      padding: 4px 10px;
+      padding: 3px 9px;
       border-radius: 999px;
-      font-size: 0.74rem;
+      font-size: 0.7rem;
       font-weight: 800;
+      white-space: nowrap;
     }
 
     .main-stage {
       flex: 1;
       width: 100%;
-      max-width: 1380px;
+      max-width: 1220px;
       margin: 0 auto;
-      padding: 22px;
+      padding: 12px 14px 20px;
     }
 
     .panel {
       background: var(--bg-panel);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 22px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
 
     .panel-top {
@@ -239,35 +251,35 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      padding-bottom: 12px;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
     }
 
     .panel-top h2 {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 1.3vw, 1.15rem);
       color: #fff;
     }
 
     .tabs {
       display: flex;
-      gap: 6px;
-      margin-bottom: 18px;
+      gap: 5px;
+      margin-bottom: 14px;
       background: var(--bg-input);
-      padding: 5px;
-      border-radius: 12px;
+      padding: 4px;
+      border-radius: 11px;
     }
 
     .tab-btn {
       flex: 1;
-      padding: 10px;
+      padding: 8px;
       border: none;
-      border-radius: 9px;
+      border-radius: 8px;
       background: transparent;
       color: var(--silver-muted);
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       cursor: pointer;
     }
 
@@ -276,31 +288,31 @@
       color: #fff;
     }
 
-    .form-group { margin-bottom: 13px; }
-    label { display: block; font-size: 0.82rem; color: var(--silver-muted); margin-bottom: 6px; }
+    .form-group { margin-bottom: 10px; }
+    label { display: block; font-size: 0.78rem; color: var(--silver-muted); margin-bottom: 4px; }
 
     input, textarea, select {
       width: 100%;
-      padding: 11px 14px;
-      border-radius: 11px;
+      padding: 9px 12px;
+      border-radius: 9px;
       border: 1px solid var(--border);
       background: var(--bg-input);
       color: #fff;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       outline: none;
     }
 
     input:focus, textarea:focus { border-color: var(--accent); }
-    textarea { min-height: 90px; resize: vertical; }
+    textarea { min-height: 76px; resize: vertical; }
 
     .btn {
-      padding: 11px 16px;
+      padding: 9px 14px;
       border: none;
-      border-radius: 11px;
+      border-radius: 9px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.18s;
     }
 
     .btn-full { width: 100%; }
@@ -316,7 +328,7 @@
     }
 
     .btn-danger {
-      background: rgba(239, 68, 68, 0.18);
+      background: rgba(239, 68, 68, 0.2);
       border: 1px solid var(--danger);
       color: #fca5a5;
     }
@@ -328,12 +340,12 @@
     }
 
     .status-msg {
-      margin-top: 12px;
-      padding: 11px 14px;
-      border-radius: 11px;
-      font-size: 0.85rem;
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 0.8rem;
       display: none;
-      line-height: 1.45;
+      line-height: 1.4;
     }
     .status-msg.show { display: block; }
     .status-msg.error { background: rgba(239, 68, 68, 0.18); border: 1px solid var(--danger); color: #fecaca; }
@@ -341,25 +353,24 @@
 
     /* SOHBET */
     .chat-box {
-      height: 58vh;
-      min-height: 360px;
+      height: clamp(260px, 52vh, 460px);
       overflow-y: auto;
       background: var(--bg-input);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 13px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-bottom: 10px;
     }
 
     .msg {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 11px 14px;
-      border-radius: 13px;
-      max-width: 82%;
+      padding: 8px 12px;
+      border-radius: 11px;
+      max-width: 85%;
     }
 
     .msg.admin-msg {
@@ -370,49 +381,48 @@
     .msg-head {
       display: flex;
       justify-content: space-between;
-      gap: 14px;
-      font-size: 0.78rem;
+      gap: 12px;
+      font-size: 0.72rem;
       color: var(--accent);
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       font-weight: 700;
     }
 
     .msg.admin-msg .msg-head { color: var(--gold); }
-    .msg-body { font-size: 0.94rem; color: #fff; word-break: break-word; }
+    .msg-body { font-size: 0.88rem; color: #fff; word-break: break-word; }
 
-    .chat-form { display: flex; gap: 10px; }
+    .chat-form { display: flex; gap: 8px; }
     .chat-form input { flex: 1; }
 
     /* GERÇEK ÇİMEN SAHA (9 KİŞİLİK) */
     .pitch-layout {
       display: grid;
-      grid-template-columns: 1fr 320px;
-      gap: 20px;
+      grid-template-columns: minmax(0, 1fr) 295px;
+      gap: 14px;
       align-items: start;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 900px) {
       .pitch-layout { grid-template-columns: 1fr; }
     }
 
     .football-pitch {
       position: relative;
       width: 100%;
-      min-height: 580px;
-      border-radius: 18px;
-      border: 3px solid rgba(255, 255, 255, 0.82);
+      height: clamp(410px, 64vh, 520px);
+      border-radius: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
       overflow: hidden;
       background: repeating-linear-gradient(
         180deg,
-        #1f7a38 0px,
-        #1f7a38 58px,
-        #258c42 58px,
-        #258c42 116px
+        #1e7837 0px,
+        #1e7837 46px,
+        #258b41 46px,
+        #258b41 92px
       );
-      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35), 0 14px 35px rgba(0, 0, 0, 0.45);
+      box-shadow: inset 0 0 45px rgba(0, 0, 0, 0.35);
     }
 
-    /* Saha Çizgileri */
     .pitch-halfway {
       position: absolute;
       top: 50%;
@@ -426,8 +436,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 124px;
-      height: 124px;
+      width: 96px;
+      height: 96px;
       border: 2px solid rgba(255, 255, 255, 0.65);
       border-radius: 50%;
       transform: translate(-50%, -50%);
@@ -437,8 +447,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: rgba(255, 255, 255, 0.85);
       border-radius: 50%;
       transform: translate(-50%, -50%);
@@ -448,8 +458,8 @@
       position: absolute;
       top: 0;
       left: 50%;
-      width: 56%;
-      height: 92px;
+      width: 52%;
+      height: 72px;
       border: 2px solid rgba(255, 255, 255, 0.65);
       border-top: none;
       transform: translateX(-50%);
@@ -459,14 +469,13 @@
       position: absolute;
       bottom: 0;
       left: 50%;
-      width: 56%;
-      height: 92px;
+      width: 52%;
+      height: 72px;
       border: 2px solid rgba(255, 255, 255, 0.65);
       border-bottom: none;
       transform: translateX(-50%);
     }
 
-    /* 9 Oyuncu Konumu */
     .player-node {
       position: absolute;
       transform: translate(-50%, -50%);
@@ -475,8 +484,7 @@
       align-items: center;
       text-align: center;
       z-index: 5;
-      cursor: default;
-      transition: transform 0.2s;
+      transition: transform 0.16s;
     }
 
     .player-node.editable {
@@ -484,41 +492,41 @@
     }
 
     .player-node.editable:hover {
-      transform: translate(-50%, -50%) scale(1.07);
+      transform: translate(-50%, -50%) scale(1.08);
     }
 
     .jersey {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       background: linear-gradient(145deg, #0f2952, #051024);
       border: 2px solid var(--silver);
       color: #fff;
       font-weight: 900;
-      font-size: 0.92rem;
+      font-size: 0.82rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .player-node.editable .jersey {
       border-color: var(--gold);
-      box-shadow: 0 0 16px rgba(251, 191, 36, 0.55);
+      box-shadow: 0 0 14px rgba(251, 191, 36, 0.65);
     }
 
     .player-tag {
-      margin-top: 5px;
+      margin-top: 3px;
       background: rgba(4, 11, 22, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.22);
-      padding: 3px 9px;
-      border-radius: 8px;
-      max-width: 135px;
+      padding: 2px 7px;
+      border-radius: 7px;
+      max-width: 112px;
     }
 
     .player-tag strong {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.7rem;
       color: #fff;
       white-space: nowrap;
       overflow: hidden;
@@ -527,7 +535,7 @@
 
     .player-tag span {
       display: block;
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       color: #7dd3fc;
       font-weight: 700;
     }
@@ -535,62 +543,65 @@
     .squad-sidebar {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 12px;
+      max-height: 520px;
+      overflow-y: auto;
     }
 
     .squad-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 10px;
-      border-radius: 10px;
+      gap: 8px;
+      padding: 6px 9px;
+      border-radius: 8px;
       background: var(--bg-input);
       border: 1px solid var(--border);
-      margin-bottom: 8px;
-      font-size: 0.84rem;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
     }
 
     /* HABERLER */
     .news-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
     }
 
     .news-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
+      border-radius: 14px;
+      padding: 13px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .news-card h3 { color: #fff; font-size: 1.04rem; }
-    .news-card p { color: var(--silver); font-size: 0.9rem; line-height: 1.5; }
+    .news-card h3 { color: #fff; font-size: 0.96rem; }
+    .news-card p { color: var(--silver); font-size: 0.84rem; line-height: 1.45; }
     .news-meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.76rem;
+      font-size: 0.72rem;
       color: var(--silver-muted);
       border-top: 1px solid var(--border);
-      padding-top: 8px;
+      padding-top: 7px;
     }
 
     .admin-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
     }
 
     .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="version-badge">v2</div>
+  <div class="version-badge">v3</div>
 
   <!-- GİRİŞ / KAYIT EKRANI -->
   <div id="authWrapper" class="auth-wrapper">
@@ -673,18 +684,18 @@
 
       <div class="user-area">
         <span id="adminBadge" class="admin-pill hidden">ADMİN</span>
-        <button type="button" class="btn btn-ghost" style="padding:7px 12px;" onclick="logoutUser()">Çıkış</button>
+        <button type="button" class="btn btn-ghost" style="padding:5px 10px; font-size:0.76rem;" onclick="logoutUser()">Çıkış</button>
       </div>
     </header>
 
     <main class="main-stage">
-      <div id="globalNotice" class="status-msg" style="margin-bottom:16px;"></div>
+      <div id="globalNotice" class="status-msg" style="margin-bottom:12px;"></div>
 
       <!-- SOHBET SEKMESİ -->
       <section id="viewChat" class="panel">
         <div class="panel-top">
           <h2>💬 Takım Karargah Sohbeti</h2>
-          <span style="font-size:0.82rem; color:var(--silver-muted);">Canlı Kulüp Kanalı</span>
+          <span style="font-size:0.78rem; color:var(--silver-muted);">Canlı Kulüp Kanalı</span>
         </div>
         <div class="chat-box" id="chatBox"></div>
         <form class="chat-form" id="chatForm">
@@ -697,9 +708,9 @@
       <section id="viewSquad" class="panel hidden">
         <div class="panel-top">
           <h2>⚽ 9 Kişilik Ana Kadro — Çimen Saha Dizilişi</h2>
-          <div style="display:flex; gap:10px; align-items:center;">
-            <span id="editModeHint" style="font-size:0.82rem; color:var(--gold); display:none;">
-              Düzenleme Modu Açık: Sahadaki oyuncuya tıkla
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <span id="editModeHint" style="font-size:0.78rem; color:var(--gold); display:none;">
+              Düzenleme Modu Açık: Oyuncuya tıkla
             </span>
             <button type="button" class="btn btn-gold hidden" id="toggleEditModeBtn" onclick="toggleSquadEditMode()">
               ✏️ Kadro Düzenleme Modu
@@ -718,21 +729,21 @@
           </div>
 
           <aside class="squad-sidebar">
-            <h3 style="font-size:1rem; color:#fff; margin-bottom:12px;">📋 Kadro Listesi (9)</h3>
+            <h3 style="font-size:0.92rem; color:#fff; margin-bottom:10px;">📋 Kadro Listesi (9)</h3>
             <div id="squadSideList"></div>
 
-            <div id="playerEditorCard" class="hidden" style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
-              <h4 style="font-size:0.9rem; color:var(--gold); margin-bottom:10px;" id="editingPlayerTitle">Oyuncu Düzenle</h4>
+            <div id="playerEditorCard" class="hidden" style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border);">
+              <h4 style="font-size:0.86rem; color:var(--gold); margin-bottom:8px;" id="editingPlayerTitle">Oyuncu Düzenle</h4>
               <div class="form-group">
                 <label>Oyuncu Adı</label>
                 <input type="text" id="editPlayerName" />
               </div>
               <div class="form-group">
                 <label>Mevki / Rol</label>
-                <input type="text" id="editPlayerRole" placeholder="Örn: Kaleci, Stoper, Kanat, Forvet" />
+                <input type="text" id="editPlayerRole" placeholder="Kaleci, Stoper, Kanat, Forvet..." />
               </div>
-              <div style="display:flex; gap:8px;">
-                <button type="button" class="btn btn-primary" style="flex:1;" onclick="savePlayerEdit()">Kaydet</button>
+              <div style="display:flex; gap:6px;">
+                <button type="button" class="btn btn-primary" style="flex:1;" id="savePlayerBtn">Kaydet</button>
                 <button type="button" class="btn btn-ghost" onclick="cancelPlayerEdit()">İptal</button>
               </div>
             </div>
@@ -744,11 +755,11 @@
       <section id="viewNews" class="panel hidden">
         <div class="panel-top">
           <h2>📰 İman Power FC Haberler & Duyurular</h2>
-          <span style="font-size:0.82rem; color:var(--silver-muted);">Resmi Kulüp Bülteni</span>
+          <span style="font-size:0.78rem; color:var(--silver-muted);">Resmi Kulüp Bülteni</span>
         </div>
 
-        <form id="newsForm" class="hidden" style="margin-bottom:20px; background:var(--bg-input); padding:16px; border-radius:14px; border:1px solid var(--border);">
-          <h3 style="font-size:0.96rem; color:var(--gold); margin-bottom:10px;">➕ Yeni Haber Yayınla (Admin)</h3>
+        <form id="newsForm" class="hidden" style="margin-bottom:14px; background:var(--bg-input); padding:13px; border-radius:12px; border:1px solid var(--border);">
+          <h3 style="font-size:0.88rem; color:var(--gold); margin-bottom:8px;">➕ Yeni Haber Yayınla (Admin)</h3>
           <div class="form-group">
             <label>Haber Başlığı</label>
             <input type="text" id="newsTitle" required placeholder="Örn: Haftalık Maç Programı Belli Oldu!" />
@@ -763,7 +774,7 @@
         <div class="news-grid" id="newsGrid"></div>
       </section>
 
-      <!-- YÖNETİCİ PANELİ (SADECE detaylibilgi3@gmail.com) -->
+      <!-- YÖNETİCİ PANELİ -->
       <section id="viewAdmin" class="panel hidden">
         <div class="panel-top">
           <h2>🛡️ Yönetici Kontrol Merkezi</h2>
@@ -771,17 +782,17 @@
         </div>
 
         <div class="admin-grid">
-          <div class="panel" style="padding:16px;">
-            <h3 style="font-size:1rem; color:#fff; margin-bottom:10px;">Sohbet Yönetimi</h3>
-            <p style="font-size:0.84rem; color:var(--silver-muted); margin-bottom:12px;">
+          <div class="panel" style="padding:14px;">
+            <h3 style="font-size:0.94rem; color:#fff; margin-bottom:8px;">Sohbet Yönetimi</h3>
+            <p style="font-size:0.8rem; color:var(--silver-muted); margin-bottom:10px;">
               Karargah sohbetindeki tüm mesajları kalıcı olarak silebilirsin.
             </p>
             <button type="button" class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
           </div>
 
-          <div class="panel" style="padding:16px;">
-            <h3 style="font-size:1rem; color:#fff; margin-bottom:10px;">Kayıtlı Oyuncular & Telefonlar</h3>
-            <div id="adminUsersList" style="max-height:320px; overflow-y:auto;"></div>
+          <div class="panel" style="padding:14px;">
+            <h3 style="font-size:0.94rem; color:#fff; margin-bottom:8px;">Kayıtlı Oyuncular & Telefonlar</h3>
+            <div id="adminUsersList" style="max-height:280px; overflow-y:auto;"></div>
           </div>
         </div>
       </section>
@@ -842,9 +853,10 @@
       measurementId: "G-2DF2T5ETB6"
     };
 
-    const EMAILJS_PUBLIC_KEY = "jRukwmEqAxg2KHhxg";
-    const EMAILJS_SERVICE_ID = "service_u97ob8e";
-    const EMAILJS_TEMPLATE_ID = "template_uvckn6c";
+    // Yeni İman Power EmailJS hesabı ayarları
+    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S"; //[cite: 11]
+    const EMAILJS_SERVICE_ID = "service_kb4pte6"; // Yeni hesapta farklı bir service_... ID oluştuysa burayı güncelle
+    const EMAILJS_TEMPLATE_ID = "template_vjvwe1g";
     const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -853,15 +865,14 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // 9 kişilik saha koordinatları (yüzde olarak)
     const DEFAULT_SQUAD_9 = [
-      { id: "p1", number: 1, name: "1. Oyuncu", role: "Kaleci", top: 89, left: 50 },
-      { id: "p2", number: 2, name: "2. Oyuncu", role: "Sol Bek", top: 72, left: 22 },
-      { id: "p3", number: 3, name: "3. Oyuncu", role: "Stoper", top: 75, left: 50 },
-      { id: "p4", number: 4, name: "4. Oyuncu", role: "Sağ Bek", top: 72, left: 78 },
-      { id: "p5", number: 5, name: "5. Oyuncu", role: "Sol Orta", top: 48, left: 26 },
+      { id: "p1", number: 1, name: "1. Oyuncu", role: "Kaleci", top: 88, left: 50 },
+      { id: "p2", number: 2, name: "2. Oyuncu", role: "Sol Bek", top: 71, left: 22 },
+      { id: "p3", number: 3, name: "3. Oyuncu", role: "Stoper", top: 74, left: 50 },
+      { id: "p4", number: 4, name: "4. Oyuncu", role: "Sağ Bek", top: 71, left: 78 },
+      { id: "p5", number: 5, name: "5. Oyuncu", role: "Sol Orta", top: 47, left: 26 },
       { id: "p6", number: 6, name: "6. Oyuncu", role: "Merkez", top: 50, left: 50 },
-      { id: "p7", number: 7, name: "7. Oyuncu", role: "Sağ Orta", top: 48, left: 74 },
+      { id: "p7", number: 7, name: "7. Oyuncu", role: "Sağ Orta", top: 47, left: 74 },
       { id: "p8", number: 8, name: "8. Oyuncu", role: "Sol Kanat", top: 22, left: 34 },
       { id: "p9", number: 9, name: "9. Oyuncu", role: "Forvet", top: 18, left: 66 }
     ];
@@ -869,7 +880,7 @@
     let currentProfile = null;
     let isAdmin = false;
     let squadEditMode = false;
-    let currentSquad = [...DEFAULT_SQUAD_9];
+    let currentSquad = DEFAULT_SQUAD_9.map((x) => ({ ...x }));
     let editingPlayerId = null;
 
     function showStatus(elId, message, type = "success") {
@@ -1058,7 +1069,7 @@
         box.innerHTML = "";
         const data = snapshot.val();
         if (!data) {
-          box.innerHTML = '<p style="font-size:0.86rem; color:var(--silver-muted);">Henüz mesaj yok. İlk mesajı sen yaz!</p>';
+          box.innerHTML = '<p style="font-size:0.84rem; color:var(--silver-muted);">Henüz mesaj yok. İlk mesajı sen yaz!</p>';
           return;
         }
         Object.values(data).forEach((m) => {
@@ -1085,7 +1096,7 @@
           const initialObj = {};
           DEFAULT_SQUAD_9.forEach((p) => { initialObj[p.id] = p; });
           set(ref(db, "squad9"), initialObj);
-          currentSquad = [...DEFAULT_SQUAD_9];
+          currentSquad = DEFAULT_SQUAD_9.map((x) => ({ ...x }));
         } else {
           currentSquad = DEFAULT_SQUAD_9.map((def) => ({
             ...def,
@@ -1115,19 +1126,31 @@
           </div>
         `;
         if (squadEditMode && isAdmin) {
-          node.onclick = () => openPlayerEditor(p.id);
+          node.addEventListener("click", () => openPlayerEditor(p.id));
         }
         container.appendChild(node);
 
         const item = document.createElement("div");
         item.className = "squad-item";
-        item.innerHTML = `
-          <div>
-            <strong style="color:#fff;">#${p.number} ${escapeHtml(p.name)}</strong>
-            <div style="font-size:0.75rem; color:var(--silver-muted);">${escapeHtml(p.role)}</div>
-          </div>
-          ${squadEditMode && isAdmin ? `<button type="button" class="btn btn-gold" style="padding:5px 10px; font-size:0.76rem;" onclick="openPlayerEditor('${p.id}')">Düzenle</button>` : ""}
+
+        const infoDiv = document.createElement("div");
+        infoDiv.innerHTML = `
+          <strong style="color:#fff;">#${p.number} ${escapeHtml(p.name)}</strong>
+          <div style="font-size:0.72rem; color:var(--silver-muted);">${escapeHtml(p.role)}</div>
         `;
+        item.appendChild(infoDiv);
+
+        if (squadEditMode && isAdmin) {
+          const editBtn = document.createElement("button");
+          editBtn.type = "button";
+          editBtn.className = "btn btn-gold";
+          editBtn.style.padding = "4px 8px";
+          editBtn.style.fontSize = "0.72rem";
+          editBtn.textContent = "Düzenle";
+          editBtn.addEventListener("click", () => openPlayerEditor(p.id));
+          item.appendChild(editBtn);
+        }
+
         sideList.appendChild(item);
       });
     }
@@ -1151,7 +1174,9 @@
       document.getElementById("editingPlayerTitle").textContent = `Düzenleniyor: #${p.number}`;
       document.getElementById("editPlayerName").value = p.name;
       document.getElementById("editPlayerRole").value = p.role;
-      document.getElementById("playerEditorCard").classList.remove("hidden");
+      const editorCard = document.getElementById("playerEditorCard");
+      editorCard.classList.remove("hidden");
+      editorCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
     };
 
     window.cancelPlayerEdit = () => {
@@ -1159,14 +1184,15 @@
       document.getElementById("playerEditorCard").classList.add("hidden");
     };
 
-    window.savePlayerEdit = async () => {
+    document.getElementById("savePlayerBtn").addEventListener("click", async () => {
       if (!isAdmin || !editingPlayerId) return;
+      const targetId = editingPlayerId;
       const name = document.getElementById("editPlayerName").value.trim() || "Oyuncu";
       const role = document.getElementById("editPlayerRole").value.trim() || "Kadro";
-      await update(ref(db, `squad9/${editingPlayerId}`), { name, role });
+      await update(ref(db, `squad9/${targetId}`), { name, role });
       cancelPlayerEdit();
       showStatus("globalNotice", "Kadro bilgisi sahada güncellendi.", "success");
-    };
+    });
 
     /* HABERLER */
     document.getElementById("newsForm").addEventListener("submit", async (e) => {
@@ -1192,7 +1218,7 @@
         grid.innerHTML = "";
         const data = snapshot.val();
         if (!data) {
-          grid.innerHTML = '<p style="font-size:0.88rem; color:var(--silver-muted);">Henüz haber paylaşılmamış.</p>';
+          grid.innerHTML = '<p style="font-size:0.84rem; color:var(--silver-muted);">Henüz haber paylaşılmamış.</p>';
           return;
         }
         const entries = Object.entries(data).reverse();
@@ -1204,18 +1230,22 @@
             <p>${escapeHtml(item.body)}</p>
             <div class="news-meta">
               <span>${escapeHtml(item.author || "Admin")} • ${escapeHtml(item.date || "")}</span>
-              ${isAdmin ? `<button type="button" class="btn btn-danger" style="padding:4px 9px; font-size:0.74rem;" onclick="deleteNews('${key}')">Sil</button>` : ""}
             </div>
           `;
+          if (isAdmin) {
+            const delBtn = document.createElement("button");
+            delBtn.type = "button";
+            delBtn.className = "btn btn-danger";
+            delBtn.style.padding = "3px 8px";
+            delBtn.style.fontSize = "0.7rem";
+            delBtn.textContent = "Sil";
+            delBtn.addEventListener("click", () => remove(ref(db, `news/${key}`)));
+            card.querySelector(".news-meta").appendChild(delBtn);
+          }
           grid.appendChild(card);
         });
       });
     }
-
-    window.deleteNews = async (key) => {
-      if (!isAdmin) return;
-      await remove(ref(db, `news/${key}`));
-    };
 
     /* ADMİN İŞLEMLERİ */
     window.clearAllChat = async () => {
@@ -1236,7 +1266,7 @@
           row.innerHTML = `
             <div>
               <strong style="color:#fff;">${escapeHtml(u.name)}</strong>
-              <div style="font-size:0.76rem; color:var(--silver-muted);">${escapeHtml(u.email)}</div>
+              <div style="font-size:0.72rem; color:var(--silver-muted);">${escapeHtml(u.email)}</div>
             </div>
             <span class="admin-pill">${escapeHtml(u.phone || "Telefon Yok")}</span>
           `;
