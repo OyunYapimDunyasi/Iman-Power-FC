@@ -31,6 +31,22 @@
       padding: 16px;
     }
 
+    .version-badge {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 999;
+      background: rgba(11, 23, 42, 0.92);
+      color: var(--silver);
+      border: 1px solid var(--border);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    }
+
     .container {
       width: 100%;
       max-width: 520px;
@@ -152,6 +168,15 @@
 
     .btn-primary:hover { filter: brightness(1.1); }
 
+    .btn-secondary {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--silver);
+      margin-top: 8px;
+      font-size: 0.84rem;
+      padding: 10px;
+    }
+
     .btn-danger {
       background: rgba(239, 68, 68, 0.18);
       border: 1px solid var(--danger);
@@ -165,6 +190,7 @@
       border-radius: 10px;
       font-size: 0.84rem;
       display: none;
+      line-height: 1.4;
     }
 
     .status-msg.show { display: block; }
@@ -270,6 +296,8 @@
   </style>
 </head>
 <body>
+  <div class="version-badge">v1</div>
+
   <div class="container">
     <div class="header">
       <img
@@ -301,7 +329,8 @@
             <label>Şifre</label>
             <input type="password" id="loginPassword" required placeholder="••••••••" />
           </div>
-          <button type="submit" class="btn btn-primary">Karargaha Giriş Yap</button>
+          <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Karargaha Giriş Yap</button>
+          <button type="button" class="btn btn-secondary" id="resendVerifyBtn">Doğrulama Mailini Tekrar Gönder</button>
         </form>
 
         <form id="registerForm" class="hidden">
@@ -321,7 +350,7 @@
             <label>Telefon Numarası (Telefonu olmayan boş bırakabilir)</label>
             <input type="tel" id="regPhone" placeholder="05xx xxx xx xx (İsteğe bağlı)" />
           </div>
-          <button type="submit" class="btn btn-primary">Kayıt Ol ve Doğrulama Gönder</button>
+          <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Kayıt Ol ve Doğrulama Gönder</button>
         </form>
 
         <div id="authStatus" class="status-msg"></div>
@@ -378,7 +407,6 @@
     </div>
   </div>
 
-  <!-- SEKME GEÇİŞLERİ İÇİN GARANTİLİ KLASİK SCRIPT -->
   <script>
     function switchAuthTab(tab) {
       const isLogin = tab === "login";
@@ -400,7 +428,6 @@
     }
   </script>
 
-  <!-- FIREBASE & EMAILJS MODÜLÜ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import {
@@ -408,8 +435,7 @@
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       sendEmailVerification,
-      signOut,
-      onAuthStateChanged
+      signOut
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import {
       getDatabase,
@@ -464,13 +490,37 @@
       el.className = `status-msg show ${type}`;
     }
 
+    function formatAuthError(err) {
+      const code = err?.code || "";
+      if (code === "auth/invalid-credential" || code === "auth/user-not-found" || code === "auth/wrong-password") {
+        return "Gmail veya şifre hatalı.";
+      }
+      if (code === "auth/email-already-in-use") {
+        return "Bu Gmail adresi zaten kayıtlı. Giriş sekmesinden giriş yapabilirsin.";
+      }
+      if (code === "auth/weak-password") {
+        return "Şifre en az 6 karakter olmalı.";
+      }
+      if (code === "auth/invalid-email") {
+        return "Geçerli bir Gmail adresi yazmalısın.";
+      }
+      if (code === "auth/too-many-requests") {
+        return "Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.";
+      }
+      return err?.message || "Bilinmeyen bir hata oluştu.";
+    }
+
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = document.getElementById("registerSubmitBtn");
       const name = document.getElementById("regName").value.trim();
       const email = document.getElementById("regEmail").value.trim();
       const password = document.getElementById("regPassword").value;
       const phoneInput = document.getElementById("regPhone").value.trim();
       const phone = phoneInput ? phoneInput : "Telefon Yok";
+
+      btn.disabled = true;
+      btn.textContent = "Kaydediliyor...";
 
       try {
         const cred = await createUserWithEmailAndPassword(auth, email, password);
@@ -487,20 +537,50 @@
         await signOut(auth);
         showStatus(
           "authStatus",
-          "Kayıt başarılı! Gmail kutuna doğrulama linki gönderildi. Linke tıkladıktan sonra giriş yapabilirsin.",
+          "Kayıt başarılı! Gmail kutuna (ve Spam klasörüne) doğrulama linki gönderildi. Linke tıkladıktan sonra giriş yap.",
           "success"
         );
         e.target.reset();
         switchAuthTab("login");
       } catch (err) {
-        showStatus("authStatus", "Kayıt hatası: " + err.message, "error");
+        showStatus("authStatus", "Kayıt hatası: " + formatAuthError(err), "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Kayıt Ol ve Doğrulama Gönder";
+      }
+    });
+
+    document.getElementById("resendVerifyBtn").addEventListener("click", async () => {
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!email || !password) {
+        showStatus("authStatus", "Doğrulama mailini tekrar göndermek için önce Gmail ve şifreni yaz.", "error");
+        return;
+      }
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        if (cred.user.emailVerified) {
+          showStatus("authStatus", "E-postan zaten doğrulanmış! Doğrudan giriş yapabilirsin.", "success");
+          return;
+        }
+        await sendEmailVerification(cred.user);
+        await signOut(auth);
+        showStatus("authStatus", "Doğrulama maili tekrar gönderildi. Gmail ve Spam kutunu kontrol et.", "success");
+      } catch (err) {
+        showStatus("authStatus", "Gönderim hatası: " + formatAuthError(err), "error");
       }
     });
 
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const btn = document.getElementById("loginSubmitBtn");
       const email = document.getElementById("loginEmail").value.trim();
       const password = document.getElementById("loginPassword").value;
+
+      btn.disabled = true;
+      btn.textContent = "Giriş yapılıyor...";
 
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
@@ -509,41 +589,60 @@
           await signOut(auth);
           showStatus(
             "authStatus",
-            "E-postan henüz doğrulanmamış! Lütfen Gmail kutundaki doğrulama linkine tıkla.",
+            "E-postan henüz doğrulanmamış! Gmail kutundaki doğrulama linkine tıkla veya alttaki butondan tekrar gönder.",
             "error"
           );
           return;
         }
 
-        const snap = await get(ref(db, `users/${cred.user.uid}`));
-        const profile = snap.val() || {
+        let profile = {
           name: email.split("@")[0],
           email,
           phone: "Telefon Yok"
         };
 
         try {
+          const snap = await get(ref(db, `users/${cred.user.uid}`));
+          if (snap.exists()) {
+            profile = snap.val();
+          }
+        } catch (dbErr) {
+          console.warn("Veritabanı okuma uyarısı:", dbErr);
+        }
+
+        let mailInfo = "";
+        try {
           await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
             to_email: profile.email,
+            email: profile.email,
             player_name: profile.name,
+            name: profile.name,
             player_phone: profile.phone,
             login_time: new Date().toLocaleString("tr-TR")
           });
+          mailInfo = " Karşılama maili gönderildi.";
         } catch (mailErr) {
-          console.warn("Mail gönderim uyarısı:", mailErr);
+          mailInfo = " (Not: Mail gönderilemedi — EmailJS şablonunda To Email alanını {{to_email}} yapıp kaydettiğinden emin ol.)";
+          console.error("EmailJS hatası:", mailErr);
         }
 
         currentProfile = profile;
-        enterApp(profile);
+        enterApp(profile, mailInfo);
       } catch (err) {
-        showStatus("authStatus", "Giriş hatası: E-posta veya şifre hatalı.", "error");
+        showStatus("authStatus", "Giriş hatası: " + formatAuthError(err), "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Karargaha Giriş Yap";
       }
     });
 
-    function enterApp(profile) {
+    function enterApp(profile, mailInfo = "") {
       document.getElementById("authSection").classList.add("hidden");
       document.getElementById("appSection").classList.remove("hidden");
       document.getElementById("activeUserLabel").textContent = `${profile.name} (${profile.phone})`;
+      if (mailInfo) {
+        showStatus("adminStatus", "Giriş başarılı." + mailInfo, "success");
+      }
       renderSquad();
       listenChat();
       listenUsersForAdmin();
@@ -551,6 +650,7 @@
 
     window.logoutUser = async () => {
       isAdminUnlocked = false;
+      currentProfile = null;
       document.getElementById("adminLockBox").classList.remove("hidden");
       document.getElementById("adminControls").classList.add("hidden");
       await signOut(auth);
@@ -627,4 +727,32 @@
       showStatus("adminStatus", "Tüm sohbet mesajları silindi.", "success");
     };
 
-    function listenUsersForAdmin()
+    function listenUsersForAdmin() {
+      onValue(ref(db, "users"), (snapshot) => {
+        const list = document.getElementById("adminUsersList");
+        list.innerHTML = "";
+        const data = snapshot.val();
+        if (!data) return;
+        Object.values(data).forEach((u) => {
+          const card = document.createElement("div");
+          card.className = "squad-card";
+          card.innerHTML = `
+            <div>
+              <strong style="font-size:0.88rem;">${u.name}</strong>
+              <div style="font-size:0.75rem; color:var(--silver-muted);">${u.email}</div>
+            </div>
+            <span class="badge">${u.phone}</span>
+          `;
+          list.appendChild(card);
+        });
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[c]));
+    }
+  </script>
+</body>
+</html>
