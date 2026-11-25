@@ -49,13 +49,31 @@
     }
 
     .logo-img {
-      width: 92px;
-      height: 92px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid var(--silver);
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.28);
       margin-bottom: 10px;
+      display: inline-block;
+    }
+
+    .logo-fallback {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--silver);
+      background: linear-gradient(135deg, #162e54, #061021);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: 2px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
     }
 
     .header h1 {
@@ -84,13 +102,13 @@
 
     .tab-btn {
       flex: 1;
-      padding: 9px 6px;
+      padding: 10px 8px;
       border: none;
       border-radius: 9px;
       background: transparent;
       color: var(--silver-muted);
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       cursor: pointer;
       transition: 0.2s;
     }
@@ -101,9 +119,9 @@
     }
 
     .form-group { margin-bottom: 12px; }
-    label { display: block; font-size: 0.8rem; color: var(--silver-muted); margin-bottom: 5px; }
+    label { display: block; font-size: 0.82rem; color: var(--silver-muted); margin-bottom: 5px; }
 
-    input, textarea, select {
+    input {
       width: 100%;
       padding: 11px 13px;
       border-radius: 10px;
@@ -114,7 +132,7 @@
       outline: none;
     }
 
-    input:focus, textarea:focus { border-color: var(--accent); }
+    input:focus { border-color: var(--accent); }
 
     .btn {
       width: 100%;
@@ -133,13 +151,6 @@
     }
 
     .btn-primary:hover { filter: brightness(1.1); }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--silver);
-      margin-top: 8px;
-    }
 
     .btn-danger {
       background: rgba(239, 68, 68, 0.18);
@@ -261,7 +272,14 @@
 <body>
   <div class="container">
     <div class="header">
-      <img src="logo.png" alt="İman Power FC Logo" class="logo-img" onerror="this.style.display='none'" />
+      <img
+        src="logo.jpeg"
+        alt="İman Power FC Logo"
+        class="logo-img"
+        id="clubLogo"
+        onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
+      />
+      <div id="logoFallback" class="logo-fallback">IPFC</div>
       <h1>İMAN POWER FC</h1>
       <p>2024 • Disiplin • İnanç • Güç</p>
     </div>
@@ -270,8 +288,8 @@
       <!-- GİRİŞ / KAYIT EKRANI -->
       <div id="authSection">
         <div class="tabs">
-          <button class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Giriş Yap</button>
-          <button class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Kayıt Ol</button>
+          <button type="button" class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Giriş Yap</button>
+          <button type="button" class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Kayıt Ol</button>
         </div>
 
         <form id="loginForm">
@@ -289,7 +307,7 @@
         <form id="registerForm" class="hidden">
           <div class="form-group">
             <label>İsim Soyisim / Takma Ad *</label>
-            <input type="text" id="regName" required placeholder="Adını yaz" />
+            <input type="text" id="regName" required placeholder="Adını ve soyadını yaz" />
           </div>
           <div class="form-group">
             <label>Gmail Adresi *</label>
@@ -313,13 +331,13 @@
       <div id="appSection" class="hidden">
         <div class="top-user-bar">
           <span id="activeUserLabel">Oyuncu</span>
-          <button class="nav-item" style="padding:4px 10px;" onclick="logoutUser()">Çıkış</button>
+          <button type="button" class="nav-item" style="padding:4px 10px;" onclick="logoutUser()">Çıkış</button>
         </div>
 
         <div class="nav-bar">
-          <button class="nav-item active" id="navChat" onclick="switchAppTab('chat')">💬 Sohbet</button>
-          <button class="nav-item" id="navSquad" onclick="switchAppTab('squad')">⚽ Kadro (9)</button>
-          <button class="nav-item" id="navAdmin" onclick="switchAppTab('admin')">🛡️ Yönetici</button>
+          <button type="button" class="nav-item active" id="navChat" onclick="switchAppTab('chat')">💬 Sohbet</button>
+          <button type="button" class="nav-item" id="navSquad" onclick="switchAppTab('squad')">⚽ Kadro (9)</button>
+          <button type="button" class="nav-item" id="navAdmin" onclick="switchAppTab('admin')">🛡️ Yönetici</button>
         </div>
 
         <!-- SOHBET -->
@@ -343,12 +361,12 @@
               <label>Yönetici Şifresi</label>
               <input type="password" id="adminPassInput" placeholder="Yönetici şifresini gir" />
             </div>
-            <button class="btn btn-primary" onclick="unlockAdmin()">Yönetici Panelini Aç</button>
+            <button type="button" class="btn btn-primary" onclick="unlockAdmin()">Yönetici Panelini Aç</button>
           </div>
 
           <div id="adminControls" class="hidden">
             <p style="font-size:0.85rem; color:var(--gold); margin-bottom:10px;">✔ Yönetici Yetkisi Aktif</p>
-            <button class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
+            <button type="button" class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
             <div style="margin-top:14px;">
               <label>Kayıtlı Oyuncular & Telefonlar</label>
               <div class="squad-list" id="adminUsersList"></div>
@@ -360,6 +378,29 @@
     </div>
   </div>
 
+  <!-- SEKME GEÇİŞLERİ İÇİN GARANTİLİ KLASİK SCRIPT -->
+  <script>
+    function switchAuthTab(tab) {
+      const isLogin = tab === "login";
+      document.getElementById("tabLogin").classList.toggle("active", isLogin);
+      document.getElementById("tabRegister").classList.toggle("active", !isLogin);
+      document.getElementById("loginForm").classList.toggle("hidden", !isLogin);
+      document.getElementById("registerForm").classList.toggle("hidden", isLogin);
+      const status = document.getElementById("authStatus");
+      status.className = "status-msg";
+      status.textContent = "";
+    }
+
+    function switchAppTab(tab) {
+      ["chat", "squad", "admin"].forEach((t) => {
+        const cap = t[0].toUpperCase() + t.slice(1);
+        document.getElementById("nav" + cap).classList.toggle("active", t === tab);
+        document.getElementById("view" + cap).classList.toggle("hidden", t !== tab);
+      });
+    }
+  </script>
+
+  <!-- FIREBASE & EMAILJS MODÜLÜ -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import {
@@ -423,22 +464,6 @@
       el.className = `status-msg show ${type}`;
     }
 
-    window.switchAuthTab = (tab) => {
-      const isLogin = tab === "login";
-      document.getElementById("tabLogin").classList.toggle("active", isLogin);
-      document.getElementById("tabRegister").classList.toggle("active", !isLogin);
-      document.getElementById("loginForm").classList.toggle("hidden", !isLogin);
-      document.getElementById("registerForm").classList.toggle("hidden", isLogin);
-      document.getElementById("authStatus").className = "status-msg";
-    };
-
-    window.switchAppTab = (tab) => {
-      ["chat", "squad", "admin"].forEach((t) => {
-        document.getElementById("nav" + t[0].toUpperCase() + t.slice(1)).classList.toggle("active", t === tab);
-        document.getElementById("view" + t[0].toUpperCase() + t.slice(1)).classList.toggle("hidden", t !== tab);
-      });
-    };
-
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = document.getElementById("regName").value.trim();
@@ -466,6 +491,7 @@
           "success"
         );
         e.target.reset();
+        switchAuthTab("login");
       } catch (err) {
         showStatus("authStatus", "Kayıt hatası: " + err.message, "error");
       }
@@ -601,41 +627,4 @@
       showStatus("adminStatus", "Tüm sohbet mesajları silindi.", "success");
     };
 
-    function listenUsersForAdmin() {
-      onValue(ref(db, "users"), (snapshot) => {
-        const list = document.getElementById("adminUsersList");
-        list.innerHTML = "";
-        const data = snapshot.val();
-        if (!data) return;
-        Object.values(data).forEach((u) => {
-          const card = document.createElement("div");
-          card.className = "squad-card";
-          card.innerHTML = `
-            <div>
-              <strong style="font-size:0.88rem;">${u.name}</strong>
-              <div style="font-size:0.75rem; color:var(--silver-muted);">${u.email}</div>
-            </div>
-            <span class="badge">${u.phone}</span>
-          `;
-          list.appendChild(card);
-        });
-      });
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, (c) => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-      }[c]));
-    }
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user && user.emailVerified) {
-        const snap = await get(ref(db, `users/${user.uid}`));
-        const profile = snap.val() || { name: user.email, email: user.email, phone: "Telefon Yok" };
-        currentProfile = profile;
-        enterApp(profile);
-      }
-    });
-  </script>
-</body>
-</html>
+    function listenUsersForAdmin()
