@@ -7,110 +7,253 @@
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     :root {
-      --bg-dark: #040b16;
-      --bg-card: #0b172a;
-      --bg-input: #11223d;
-      --silver: #d4dce8;
-      --silver-muted: #8b9bb4;
+      --bg-dark: #030812;
+      --bg-panel: rgba(9, 19, 36, 0.86);
+      --bg-card: rgba(16, 32, 58, 0.78);
+      --bg-input: rgba(11, 24, 45, 0.92);
+      --silver: #e2e8f0;
+      --silver-muted: #94a3b8;
       --accent: #38bdf8;
-      --gold: #f5b942;
+      --accent-2: #2563eb;
+      --gold: #fbbf24;
       --danger: #ef4444;
       --success: #22c55e;
-      --border: rgba(212, 220, 232, 0.18);
+      --border: rgba(226, 232, 240, 0.16);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
 
     body {
-      background: radial-gradient(circle at top, #102444 0%, var(--bg-dark) 70%);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.24), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.16), transparent 40%),
+        linear-gradient(180deg, #061124 0%, var(--bg-dark) 100%);
       color: var(--silver);
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px;
+      width: 100%;
     }
 
     .version-badge {
       position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 999;
-      background: rgba(11, 23, 42, 0.92);
-      color: var(--silver);
-      border: 1px solid var(--border);
-      padding: 5px 11px;
+      top: 14px;
+      left: 14px;
+      z-index: 1000;
+      background: rgba(15, 29, 53, 0.94);
+      color: #fff;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      padding: 6px 13px;
       border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
-    .container {
+    /* GİRİŞ / KAYIT TAM EKRAN DÜZENİ */
+    .auth-wrapper {
+      min-height: 100vh;
       width: 100%;
-      max-width: 520px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
-      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
     }
 
-    .header {
-      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(4,11,22,0.9));
-      padding: 22px 20px 16px;
+    .auth-box {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .brand-header {
       text-align: center;
-      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
     }
 
     .logo-img {
-      width: 100px;
-      height: 100px;
+      width: 104px;
+      height: 104px;
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid var(--silver);
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.28);
-      margin-bottom: 10px;
+      box-shadow: 0 0 28px rgba(56, 189, 248, 0.32);
+      margin-bottom: 12px;
       display: inline-block;
     }
 
     .logo-fallback {
-      width: 100px;
-      height: 100px;
+      width: 104px;
+      height: 104px;
       border-radius: 50%;
       border: 2px solid var(--silver);
-      background: linear-gradient(135deg, #162e54, #061021);
+      background: linear-gradient(135deg, #1d4ed8, #071326);
       color: #fff;
-      font-weight: 800;
-      font-size: 1.35rem;
+      font-weight: 900;
+      font-size: 1.4rem;
       letter-spacing: 2px;
       display: none;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 10px;
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.25);
+      margin: 0 auto 12px;
     }
 
-    .header h1 {
-      font-size: 1.35rem;
-      letter-spacing: 1.5px;
+    .brand-header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 1.8px;
       color: #fff;
-      text-transform: uppercase;
     }
 
-    .header p {
-      font-size: 0.82rem;
+    .brand-header p {
+      font-size: 0.85rem;
       color: var(--silver-muted);
       margin-top: 4px;
     }
 
-    .content { padding: 20px; }
+    /* TAM EKRAN UYGULAMA KABUĞU */
+    .app-shell {
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      width: 100%;
+      background: rgba(8, 17, 33, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px 12px 68px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--silver);
+    }
+
+    .topbar-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .topbar-sub {
+      font-size: 0.76rem;
+      color: var(--silver-muted);
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      padding: 9px 15px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--silver-muted);
+      font-weight: 700;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.5);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+
+    .admin-pill {
+      background: rgba(251, 191, 36, 0.16);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 800;
+    }
+
+    .main-stage {
+      flex: 1;
+      width: 100%;
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+    }
+
+    .panel-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-top h2 {
+      font-size: 1.2rem;
+      color: #fff;
+    }
 
     .tabs {
       display: flex;
       gap: 6px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       background: var(--bg-input);
       padding: 5px;
       border-radius: 12px;
@@ -118,29 +261,28 @@
 
     .tab-btn {
       flex: 1;
-      padding: 10px 8px;
+      padding: 10px;
       border: none;
       border-radius: 9px;
       background: transparent;
       color: var(--silver-muted);
-      font-weight: 600;
-      font-size: 0.88rem;
+      font-weight: 700;
+      font-size: 0.9rem;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .tab-btn.active {
-      background: linear-gradient(135deg, #1d4ed8, #0284c7);
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
       color: #fff;
     }
 
-    .form-group { margin-bottom: 12px; }
-    label { display: block; font-size: 0.82rem; color: var(--silver-muted); margin-bottom: 5px; }
+    .form-group { margin-bottom: 13px; }
+    label { display: block; font-size: 0.82rem; color: var(--silver-muted); margin-bottom: 6px; }
 
-    input {
+    input, textarea, select {
       width: 100%;
-      padding: 11px 13px;
-      border-radius: 10px;
+      padding: 11px 14px;
+      border-radius: 11px;
       border: 1px solid var(--border);
       background: var(--bg-input);
       color: #fff;
@@ -148,263 +290,502 @@
       outline: none;
     }
 
-    input:focus { border-color: var(--accent); }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { min-height: 90px; resize: vertical; }
 
     .btn {
-      width: 100%;
-      padding: 12px;
+      padding: 11px 16px;
       border: none;
       border-radius: 11px;
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: 0.2s;
     }
 
+    .btn-full { width: 100%; }
     .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
       color: #fff;
     }
+    .btn-primary:hover { filter: brightness(1.08); }
 
-    .btn-primary:hover { filter: brightness(1.1); }
-
-    .btn-secondary {
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      color: var(--silver);
-      margin-top: 8px;
-      font-size: 0.84rem;
-      padding: 10px;
+    .btn-gold {
+      background: linear-gradient(135deg, #d97706, var(--gold));
+      color: #09111e;
     }
 
     .btn-danger {
       background: rgba(239, 68, 68, 0.18);
       border: 1px solid var(--danger);
       color: #fca5a5;
-      margin-top: 8px;
+    }
+
+    .btn-ghost {
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--silver);
     }
 
     .status-msg {
       margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 0.84rem;
+      padding: 11px 14px;
+      border-radius: 11px;
+      font-size: 0.85rem;
       display: none;
-      line-height: 1.4;
+      line-height: 1.45;
     }
-
     .status-msg.show { display: block; }
     .status-msg.error { background: rgba(239, 68, 68, 0.18); border: 1px solid var(--danger); color: #fecaca; }
     .status-msg.success { background: rgba(34, 197, 94, 0.18); border: 1px solid var(--success); color: #bbf7d0; }
 
-    .nav-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 14px;
-    }
-
-    .nav-item {
-      padding: 9px 6px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg-input);
-      color: var(--silver-muted);
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .nav-item.active {
-      background: var(--silver);
-      color: var(--bg-dark);
-      border-color: var(--silver);
-    }
-
+    /* SOHBET */
     .chat-box {
-      height: 300px;
+      height: 58vh;
+      min-height: 360px;
       overflow-y: auto;
       background: var(--bg-input);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
+      border-radius: 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
     }
 
     .msg {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 9px 12px;
-      border-radius: 10px;
+      padding: 11px 14px;
+      border-radius: 13px;
+      max-width: 82%;
     }
 
     .msg.admin-msg {
       border-color: var(--gold);
-      background: rgba(245, 185, 66, 0.08);
+      background: rgba(251, 191, 36, 0.09);
     }
 
     .msg-head {
       display: flex;
       justify-content: space-between;
-      font-size: 0.76rem;
+      gap: 14px;
+      font-size: 0.78rem;
       color: var(--accent);
-      margin-bottom: 3px;
+      margin-bottom: 4px;
       font-weight: 700;
     }
 
     .msg.admin-msg .msg-head { color: var(--gold); }
-    .msg-body { font-size: 0.9rem; color: #fff; word-break: break-word; }
+    .msg-body { font-size: 0.94rem; color: #fff; word-break: break-word; }
 
-    .chat-form { display: flex; gap: 8px; }
+    .chat-form { display: flex; gap: 10px; }
     .chat-form input { flex: 1; }
-    .chat-form button { width: auto; padding: 0 18px; }
 
-    .squad-list { display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; }
-    .squad-card {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: var(--bg-input);
-      border: 1px solid var(--border);
-      padding: 10px 14px;
-      border-radius: 11px;
+    /* GERÇEK ÇİMEN SAHA (9 KİŞİLİK) */
+    .pitch-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+      align-items: start;
     }
-    .badge {
-      font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(56, 189, 248, 0.16);
-      color: var(--accent);
+
+    @media (max-width: 980px) {
+      .pitch-layout { grid-template-columns: 1fr; }
+    }
+
+    .football-pitch {
+      position: relative;
+      width: 100%;
+      min-height: 580px;
+      border-radius: 18px;
+      border: 3px solid rgba(255, 255, 255, 0.82);
+      overflow: hidden;
+      background: repeating-linear-gradient(
+        180deg,
+        #1f7a38 0px,
+        #1f7a38 58px,
+        #258c42 58px,
+        #258c42 116px
+      );
+      box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35), 0 14px 35px rgba(0, 0, 0, 0.45);
+    }
+
+    /* Saha Çizgileri */
+    .pitch-halfway {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.65);
+    }
+
+    .pitch-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 124px;
+      height: 124px;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pitch-spot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pitch-box-top {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 56%;
+      height: 92px;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      border-top: none;
+      transform: translateX(-50%);
+    }
+
+    .pitch-box-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 56%;
+      height: 92px;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      border-bottom: none;
+      transform: translateX(-50%);
+    }
+
+    /* 9 Oyuncu Konumu */
+    .player-node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 5;
+      cursor: default;
+      transition: transform 0.2s;
+    }
+
+    .player-node.editable {
+      cursor: pointer;
+    }
+
+    .player-node.editable:hover {
+      transform: translate(-50%, -50%) scale(1.07);
+    }
+
+    .jersey {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #0f2952, #051024);
+      border: 2px solid var(--silver);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55);
+    }
+
+    .player-node.editable .jersey {
+      border-color: var(--gold);
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.55);
+    }
+
+    .player-tag {
+      margin-top: 5px;
+      background: rgba(4, 11, 22, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 3px 9px;
+      border-radius: 8px;
+      max-width: 135px;
+    }
+
+    .player-tag strong {
+      display: block;
+      font-size: 0.78rem;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-tag span {
+      display: block;
+      font-size: 0.68rem;
+      color: #7dd3fc;
       font-weight: 700;
     }
 
-    .hidden { display: none !important; }
-    .top-user-bar {
+    .squad-sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .squad-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.8rem;
-      color: var(--silver-muted);
-      margin-bottom: 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      margin-bottom: 8px;
+      font-size: 0.84rem;
     }
+
+    /* HABERLER */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .news-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .news-card h3 { color: #fff; font-size: 1.04rem; }
+    .news-card p { color: var(--silver); font-size: 0.9rem; line-height: 1.5; }
+    .news-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.76rem;
+      color: var(--silver-muted);
+      border-top: 1px solid var(--border);
+      padding-top: 8px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
-  <div class="version-badge">v1</div>
+  <div class="version-badge">v2</div>
 
-  <div class="container">
-    <div class="header">
-      <img
-        src="logo.jpeg"
-        alt="İman Power FC Logo"
-        class="logo-img"
-        id="clubLogo"
-        onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='flex';"
-      />
-      <div id="logoFallback" class="logo-fallback">IPFC</div>
-      <h1>İMAN POWER FC</h1>
-      <p>2024 • Disiplin • İnanç • Güç</p>
-    </div>
-
-    <div class="content">
-      <!-- GİRİŞ / KAYIT EKRANI -->
-      <div id="authSection">
-        <div class="tabs">
-          <button type="button" class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Giriş Yap</button>
-          <button type="button" class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Kayıt Ol</button>
-        </div>
-
-        <form id="loginForm">
-          <div class="form-group">
-            <label>Gmail Adresi</label>
-            <input type="email" id="loginEmail" required placeholder="ornek@gmail.com" />
-          </div>
-          <div class="form-group">
-            <label>Şifre</label>
-            <input type="password" id="loginPassword" required placeholder="••••••••" />
-          </div>
-          <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Karargaha Giriş Yap</button>
-          <button type="button" class="btn btn-secondary" id="resendVerifyBtn">Doğrulama Mailini Tekrar Gönder</button>
-        </form>
-
-        <form id="registerForm" class="hidden">
-          <div class="form-group">
-            <label>İsim Soyisim / Takma Ad *</label>
-            <input type="text" id="regName" required placeholder="Adını ve soyadını yaz" />
-          </div>
-          <div class="form-group">
-            <label>Gmail Adresi *</label>
-            <input type="email" id="regEmail" required placeholder="ornek@gmail.com" />
-          </div>
-          <div class="form-group">
-            <label>Şifre (En az 6 karakter) *</label>
-            <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" />
-          </div>
-          <div class="form-group">
-            <label>Telefon Numarası (Telefonu olmayan boş bırakabilir)</label>
-            <input type="tel" id="regPhone" placeholder="05xx xxx xx xx (İsteğe bağlı)" />
-          </div>
-          <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Kayıt Ol ve Doğrulama Gönder</button>
-        </form>
-
-        <div id="authStatus" class="status-msg"></div>
+  <!-- GİRİŞ / KAYIT EKRANI -->
+  <div id="authWrapper" class="auth-wrapper">
+    <div class="auth-box">
+      <div class="brand-header">
+        <img
+          src="logo.jpeg"
+          alt="İman Power FC Logo"
+          class="logo-img"
+          onerror="this.style.display='none'; document.getElementById('authLogoFallback').style.display='flex';"
+        />
+        <div id="authLogoFallback" class="logo-fallback">IPFC</div>
+        <h1>İMAN POWER FC</h1>
+        <p>2024 • Disiplin • İnanç • Güç</p>
       </div>
 
-      <!-- ANA UYGULAMA EKRANI -->
-      <div id="appSection" class="hidden">
-        <div class="top-user-bar">
-          <span id="activeUserLabel">Oyuncu</span>
-          <button type="button" class="nav-item" style="padding:4px 10px;" onclick="logoutUser()">Çıkış</button>
+      <div class="tabs">
+        <button type="button" class="tab-btn active" id="tabLogin" onclick="switchAuthTab('login')">Giriş Yap</button>
+        <button type="button" class="tab-btn" id="tabRegister" onclick="switchAuthTab('register')">Kayıt Ol</button>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Gmail Adresi</label>
+          <input type="email" id="loginEmail" required placeholder="ornek@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label>Şifre</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn">Karargaha Giriş Yap</button>
+      </form>
+
+      <form id="registerForm" class="hidden">
+        <div class="form-group">
+          <label>İsim Soyisim / Takma Ad *</label>
+          <input type="text" id="regName" required placeholder="Adını ve soyadını yaz" />
+        </div>
+        <div class="form-group">
+          <label>Gmail Adresi *</label>
+          <input type="email" id="regEmail" required placeholder="ornek@gmail.com" />
+        </div>
+        <div class="form-group">
+          <label>Şifre (En az 6 karakter) *</label>
+          <input type="password" id="regPassword" minlength="6" required placeholder="••••••••" />
+        </div>
+        <div class="form-group">
+          <label>Telefon Numarası (Telefonu olmayan boş bırakabilir)</label>
+          <input type="tel" id="regPhone" placeholder="05xx xxx xx xx (İsteğe bağlı)" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" id="registerSubmitBtn">Kayıt Ol ve Doğrulama Gönder</button>
+      </form>
+
+      <div id="authStatus" class="status-msg"></div>
+    </div>
+  </div>
+
+  <!-- TAM EKRAN UYGULAMA -->
+  <div id="appShell" class="app-shell hidden">
+    <header class="topbar">
+      <div class="topbar-brand">
+        <img
+          src="logo.jpeg"
+          alt="Logo"
+          class="topbar-logo"
+          onerror="this.style.display='none'"
+        />
+        <div>
+          <div class="topbar-title">İMAN POWER FC</div>
+          <div class="topbar-sub" id="activeUserSub">Oyuncu</div>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button type="button" class="nav-btn active" id="navChat" onclick="switchAppTab('chat')">💬 Sohbet</button>
+        <button type="button" class="nav-btn" id="navSquad" onclick="switchAppTab('squad')">⚽ Kadro (9)</button>
+        <button type="button" class="nav-btn" id="navNews" onclick="switchAppTab('news')">📰 Haberler</button>
+        <button type="button" class="nav-btn hidden" id="navAdmin" onclick="switchAppTab('admin')">🛡️ Yönetici</button>
+      </nav>
+
+      <div class="user-area">
+        <span id="adminBadge" class="admin-pill hidden">ADMİN</span>
+        <button type="button" class="btn btn-ghost" style="padding:7px 12px;" onclick="logoutUser()">Çıkış</button>
+      </div>
+    </header>
+
+    <main class="main-stage">
+      <div id="globalNotice" class="status-msg" style="margin-bottom:16px;"></div>
+
+      <!-- SOHBET SEKMESİ -->
+      <section id="viewChat" class="panel">
+        <div class="panel-top">
+          <h2>💬 Takım Karargah Sohbeti</h2>
+          <span style="font-size:0.82rem; color:var(--silver-muted);">Canlı Kulüp Kanalı</span>
+        </div>
+        <div class="chat-box" id="chatBox"></div>
+        <form class="chat-form" id="chatForm">
+          <input type="text" id="chatInput" placeholder="Takıma mesaj yaz..." required />
+          <button type="submit" class="btn btn-primary">Gönder</button>
+        </form>
+      </section>
+
+      <!-- KADRO (9 KİŞİ - ÇİMEN SAHA) SEKMESİ -->
+      <section id="viewSquad" class="panel hidden">
+        <div class="panel-top">
+          <h2>⚽ 9 Kişilik Ana Kadro — Çimen Saha Dizilişi</h2>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span id="editModeHint" style="font-size:0.82rem; color:var(--gold); display:none;">
+              Düzenleme Modu Açık: Sahadaki oyuncuya tıkla
+            </span>
+            <button type="button" class="btn btn-gold hidden" id="toggleEditModeBtn" onclick="toggleSquadEditMode()">
+              ✏️ Kadro Düzenleme Modu
+            </button>
+          </div>
         </div>
 
-        <div class="nav-bar">
-          <button type="button" class="nav-item active" id="navChat" onclick="switchAppTab('chat')">💬 Sohbet</button>
-          <button type="button" class="nav-item" id="navSquad" onclick="switchAppTab('squad')">⚽ Kadro (9)</button>
-          <button type="button" class="nav-item" id="navAdmin" onclick="switchAppTab('admin')">🛡️ Yönetici</button>
-        </div>
-
-        <!-- SOHBET -->
-        <div id="viewChat">
-          <div class="chat-box" id="chatBox"></div>
-          <form class="chat-form" id="chatForm">
-            <input type="text" id="chatInput" placeholder="Takıma mesaj yaz..." required />
-            <button type="submit" class="btn btn-primary">Gönder</button>
-          </form>
-        </div>
-
-        <!-- 9 KİŞİLİK KADRO -->
-        <div id="viewSquad" class="hidden">
-          <div class="squad-list" id="squadList"></div>
-        </div>
-
-        <!-- YÖNETİCİ PANELİ -->
-        <div id="viewAdmin" class="hidden">
-          <div id="adminLockBox">
-            <div class="form-group">
-              <label>Yönetici Şifresi</label>
-              <input type="password" id="adminPassInput" placeholder="Yönetici şifresini gir" />
-            </div>
-            <button type="button" class="btn btn-primary" onclick="unlockAdmin()">Yönetici Panelini Aç</button>
+        <div class="pitch-layout">
+          <div class="football-pitch" id="footballPitch">
+            <div class="pitch-halfway"></div>
+            <div class="pitch-circle"></div>
+            <div class="pitch-spot"></div>
+            <div class="pitch-box-top"></div>
+            <div class="pitch-box-bottom"></div>
+            <div id="pitchPlayersContainer"></div>
           </div>
 
-          <div id="adminControls" class="hidden">
-            <p style="font-size:0.85rem; color:var(--gold); margin-bottom:10px;">✔ Yönetici Yetkisi Aktif</p>
+          <aside class="squad-sidebar">
+            <h3 style="font-size:1rem; color:#fff; margin-bottom:12px;">📋 Kadro Listesi (9)</h3>
+            <div id="squadSideList"></div>
+
+            <div id="playerEditorCard" class="hidden" style="margin-top:14px; padding-top:14px; border-top:1px solid var(--border);">
+              <h4 style="font-size:0.9rem; color:var(--gold); margin-bottom:10px;" id="editingPlayerTitle">Oyuncu Düzenle</h4>
+              <div class="form-group">
+                <label>Oyuncu Adı</label>
+                <input type="text" id="editPlayerName" />
+              </div>
+              <div class="form-group">
+                <label>Mevki / Rol</label>
+                <input type="text" id="editPlayerRole" placeholder="Örn: Kaleci, Stoper, Kanat, Forvet" />
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button type="button" class="btn btn-primary" style="flex:1;" onclick="savePlayerEdit()">Kaydet</button>
+                <button type="button" class="btn btn-ghost" onclick="cancelPlayerEdit()">İptal</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- HABERLER SEKMESİ -->
+      <section id="viewNews" class="panel hidden">
+        <div class="panel-top">
+          <h2>📰 İman Power FC Haberler & Duyurular</h2>
+          <span style="font-size:0.82rem; color:var(--silver-muted);">Resmi Kulüp Bülteni</span>
+        </div>
+
+        <form id="newsForm" class="hidden" style="margin-bottom:20px; background:var(--bg-input); padding:16px; border-radius:14px; border:1px solid var(--border);">
+          <h3 style="font-size:0.96rem; color:var(--gold); margin-bottom:10px;">➕ Yeni Haber Yayınla (Admin)</h3>
+          <div class="form-group">
+            <label>Haber Başlığı</label>
+            <input type="text" id="newsTitle" required placeholder="Örn: Haftalık Maç Programı Belli Oldu!" />
+          </div>
+          <div class="form-group">
+            <label>Haber Detayı</label>
+            <textarea id="newsBody" required placeholder="Maç saati, saha bilgisi veya duyuru metni..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Haberi Yayınla</button>
+        </form>
+
+        <div class="news-grid" id="newsGrid"></div>
+      </section>
+
+      <!-- YÖNETİCİ PANELİ (SADECE detaylibilgi3@gmail.com) -->
+      <section id="viewAdmin" class="panel hidden">
+        <div class="panel-top">
+          <h2>🛡️ Yönetici Kontrol Merkezi</h2>
+          <span class="admin-pill">detaylibilgi3@gmail.com</span>
+        </div>
+
+        <div class="admin-grid">
+          <div class="panel" style="padding:16px;">
+            <h3 style="font-size:1rem; color:#fff; margin-bottom:10px;">Sohbet Yönetimi</h3>
+            <p style="font-size:0.84rem; color:var(--silver-muted); margin-bottom:12px;">
+              Karargah sohbetindeki tüm mesajları kalıcı olarak silebilirsin.
+            </p>
             <button type="button" class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
-            <div style="margin-top:14px;">
-              <label>Kayıtlı Oyuncular & Telefonlar</label>
-              <div class="squad-list" id="adminUsersList"></div>
-            </div>
           </div>
-          <div id="adminStatus" class="status-msg"></div>
+
+          <div class="panel" style="padding:16px;">
+            <h3 style="font-size:1rem; color:#fff; margin-bottom:10px;">Kayıtlı Oyuncular & Telefonlar</h3>
+            <div id="adminUsersList" style="max-height:320px; overflow-y:auto;"></div>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   </div>
 
   <script>
@@ -414,16 +795,18 @@
       document.getElementById("tabRegister").classList.toggle("active", !isLogin);
       document.getElementById("loginForm").classList.toggle("hidden", !isLogin);
       document.getElementById("registerForm").classList.toggle("hidden", isLogin);
-      const status = document.getElementById("authStatus");
-      status.className = "status-msg";
-      status.textContent = "";
+      const st = document.getElementById("authStatus");
+      st.className = "status-msg";
+      st.textContent = "";
     }
 
     function switchAppTab(tab) {
-      ["chat", "squad", "admin"].forEach((t) => {
+      ["chat", "squad", "news", "admin"].forEach((t) => {
         const cap = t[0].toUpperCase() + t.slice(1);
-        document.getElementById("nav" + cap).classList.toggle("active", t === tab);
-        document.getElementById("view" + cap).classList.toggle("hidden", t !== tab);
+        const nav = document.getElementById("nav" + cap);
+        const view = document.getElementById("view" + cap);
+        if (nav) nav.classList.toggle("active", t === tab);
+        if (view) view.classList.toggle("hidden", t !== tab);
       });
     }
   </script>
@@ -444,7 +827,8 @@
       get,
       push,
       onValue,
-      remove
+      remove,
+      update
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
     const firebaseConfig = {
@@ -461,7 +845,7 @@
     const EMAILJS_PUBLIC_KEY = "jRukwmEqAxg2KHhxg";
     const EMAILJS_SERVICE_ID = "service_u97ob8e";
     const EMAILJS_TEMPLATE_ID = "template_uvckn6c";
-    const ADMIN_SECRET_CODE = "IPFC2026";
+    const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
@@ -469,20 +853,24 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const CORE_SQUAD_9 = [
-      { name: "1. Oyuncu (Kaptan)", role: "Ana Kadro" },
-      { name: "2. Oyuncu", role: "Ana Kadro" },
-      { name: "3. Oyuncu", role: "Ana Kadro" },
-      { name: "4. Oyuncu", role: "Ana Kadro" },
-      { name: "5. Oyuncu", role: "Ana Kadro" },
-      { name: "6. Oyuncu", role: "Ana Kadro" },
-      { name: "7. Oyuncu", role: "Ana Kadro" },
-      { name: "8. Oyuncu", role: "Ana Kadro" },
-      { name: "9. Oyuncu", role: "Ana Kadro" }
+    // 9 kişilik saha koordinatları (yüzde olarak)
+    const DEFAULT_SQUAD_9 = [
+      { id: "p1", number: 1, name: "1. Oyuncu", role: "Kaleci", top: 89, left: 50 },
+      { id: "p2", number: 2, name: "2. Oyuncu", role: "Sol Bek", top: 72, left: 22 },
+      { id: "p3", number: 3, name: "3. Oyuncu", role: "Stoper", top: 75, left: 50 },
+      { id: "p4", number: 4, name: "4. Oyuncu", role: "Sağ Bek", top: 72, left: 78 },
+      { id: "p5", number: 5, name: "5. Oyuncu", role: "Sol Orta", top: 48, left: 26 },
+      { id: "p6", number: 6, name: "6. Oyuncu", role: "Merkez", top: 50, left: 50 },
+      { id: "p7", number: 7, name: "7. Oyuncu", role: "Sağ Orta", top: 48, left: 74 },
+      { id: "p8", number: 8, name: "8. Oyuncu", role: "Sol Kanat", top: 22, left: 34 },
+      { id: "p9", number: 9, name: "9. Oyuncu", role: "Forvet", top: 18, left: 66 }
     ];
 
     let currentProfile = null;
-    let isAdminUnlocked = false;
+    let isAdmin = false;
+    let squadEditMode = false;
+    let currentSquad = [...DEFAULT_SQUAD_9];
+    let editingPlayerId = null;
 
     function showStatus(elId, message, type = "success") {
       const el = document.getElementById(elId);
@@ -504,17 +892,14 @@
       if (code === "auth/invalid-email") {
         return "Geçerli bir Gmail adresi yazmalısın.";
       }
-      if (code === "auth/too-many-requests") {
-        return "Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.";
-      }
-      return err?.message || "Bilinmeyen bir hata oluştu.";
+      return err?.message || "Bir hata oluştu.";
     }
 
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("registerSubmitBtn");
       const name = document.getElementById("regName").value.trim();
-      const email = document.getElementById("regEmail").value.trim();
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
       const password = document.getElementById("regPassword").value;
       const phoneInput = document.getElementById("regPhone").value.trim();
       const phone = phoneInput ? phoneInput : "Telefon Yok";
@@ -550,33 +935,10 @@
       }
     });
 
-    document.getElementById("resendVerifyBtn").addEventListener("click", async () => {
-      const email = document.getElementById("loginEmail").value.trim();
-      const password = document.getElementById("loginPassword").value;
-
-      if (!email || !password) {
-        showStatus("authStatus", "Doğrulama mailini tekrar göndermek için önce Gmail ve şifreni yaz.", "error");
-        return;
-      }
-
-      try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        if (cred.user.emailVerified) {
-          showStatus("authStatus", "E-postan zaten doğrulanmış! Doğrudan giriş yapabilirsin.", "success");
-          return;
-        }
-        await sendEmailVerification(cred.user);
-        await signOut(auth);
-        showStatus("authStatus", "Doğrulama maili tekrar gönderildi. Gmail ve Spam kutunu kontrol et.", "success");
-      } catch (err) {
-        showStatus("authStatus", "Gönderim hatası: " + formatAuthError(err), "error");
-      }
-    });
-
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("loginSubmitBtn");
-      const email = document.getElementById("loginEmail").value.trim();
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
       const password = document.getElementById("loginPassword").value;
 
       btn.disabled = true;
@@ -589,7 +951,7 @@
           await signOut(auth);
           showStatus(
             "authStatus",
-            "E-postan henüz doğrulanmamış! Gmail kutundaki doğrulama linkine tıkla veya alttaki butondan tekrar gönder.",
+            "E-postan henüz doğrulanmamış! Lütfen Gmail kutundaki doğrulama linkine tıkla.",
             "error"
           );
           return;
@@ -607,10 +969,10 @@
             profile = snap.val();
           }
         } catch (dbErr) {
-          console.warn("Veritabanı okuma uyarısı:", dbErr);
+          console.warn("Profil okuma uyarısı:", dbErr);
         }
 
-        let mailInfo = "";
+        let mailNote = "";
         try {
           await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
             to_email: profile.email,
@@ -620,14 +982,14 @@
             player_phone: profile.phone,
             login_time: new Date().toLocaleString("tr-TR")
           });
-          mailInfo = " Karşılama maili gönderildi.";
+          mailNote = " Karşılama maili gönderildi.";
         } catch (mailErr) {
-          mailInfo = " (Not: Mail gönderilemedi — EmailJS şablonunda To Email alanını {{to_email}} yapıp kaydettiğinden emin ol.)";
-          console.error("EmailJS hatası:", mailErr);
+          console.warn("EmailJS uyarısı:", mailErr);
         }
 
         currentProfile = profile;
-        enterApp(profile, mailInfo);
+        isAdmin = (profile.email || email).toLowerCase() === ADMIN_EMAIL.toLowerCase();
+        enterApp(profile, mailNote);
       } catch (err) {
         showStatus("authStatus", "Giriş hatası: " + formatAuthError(err), "error");
       } finally {
@@ -636,28 +998,45 @@
       }
     });
 
-    function enterApp(profile, mailInfo = "") {
-      document.getElementById("authSection").classList.add("hidden");
-      document.getElementById("appSection").classList.remove("hidden");
-      document.getElementById("activeUserLabel").textContent = `${profile.name} (${profile.phone})`;
-      if (mailInfo) {
-        showStatus("adminStatus", "Giriş başarılı." + mailInfo, "success");
+    function enterApp(profile, mailNote = "") {
+      document.getElementById("authWrapper").classList.add("hidden");
+      document.getElementById("appShell").classList.remove("hidden");
+      document.getElementById("activeUserSub").textContent = `${profile.name} • ${profile.phone}`;
+
+      document.getElementById("adminBadge").classList.toggle("hidden", !isAdmin);
+      document.getElementById("navAdmin").classList.toggle("hidden", !isAdmin);
+      document.getElementById("toggleEditModeBtn").classList.toggle("hidden", !isAdmin);
+      document.getElementById("newsForm").classList.toggle("hidden", !isAdmin);
+
+      if (!isAdmin) {
+        squadEditMode = false;
+        cancelPlayerEdit();
+        document.getElementById("editModeHint").style.display = "none";
       }
-      renderSquad();
+
+      if (mailNote) {
+        showStatus("globalNotice", "Karargaha giriş yapıldı." + mailNote, "success");
+      }
+
       listenChat();
-      listenUsersForAdmin();
+      listenSquad();
+      listenNews();
+      if (isAdmin) {
+        listenUsersForAdmin();
+      }
     }
 
     window.logoutUser = async () => {
-      isAdminUnlocked = false;
       currentProfile = null;
-      document.getElementById("adminLockBox").classList.remove("hidden");
-      document.getElementById("adminControls").classList.add("hidden");
+      isAdmin = false;
+      squadEditMode = false;
+      cancelPlayerEdit();
       await signOut(auth);
-      document.getElementById("appSection").classList.add("hidden");
-      document.getElementById("authSection").classList.remove("hidden");
+      document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("authWrapper").classList.remove("hidden");
     };
 
+    /* SOHBET */
     document.getElementById("chatForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const input = document.getElementById("chatInput");
@@ -666,7 +1045,7 @@
 
       await push(ref(db, "messages"), {
         sender: currentProfile.name,
-        isAdmin: isAdminUnlocked,
+        isAdmin,
         text,
         time: new Date().toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" })
       });
@@ -679,7 +1058,7 @@
         box.innerHTML = "";
         const data = snapshot.val();
         if (!data) {
-          box.innerHTML = '<p style="font-size:0.82rem; color:var(--silver-muted);">Henüz mesaj yok. İlk mesajı sen at!</p>';
+          box.innerHTML = '<p style="font-size:0.86rem; color:var(--silver-muted);">Henüz mesaj yok. İlk mesajı sen yaz!</p>';
           return;
         }
         Object.values(data).forEach((m) => {
@@ -687,7 +1066,7 @@
           div.className = `msg ${m.isAdmin ? "admin-msg" : ""}`;
           div.innerHTML = `
             <div class="msg-head">
-              <span>${m.isAdmin ? "🛡️ " : ""}${m.sender}</span>
+              <span>${m.isAdmin ? "🛡️ ADMİN • " : ""}${escapeHtml(m.sender)}</span>
               <span>${m.time || ""}</span>
             </div>
             <div class="msg-body">${escapeHtml(m.text)}</div>
@@ -698,33 +1077,151 @@
       });
     }
 
-    function renderSquad() {
-      const list = document.getElementById("squadList");
-      list.innerHTML = "";
-      CORE_SQUAD_9.forEach((p) => {
-        const card = document.createElement("div");
-        card.className = "squad-card";
-        card.innerHTML = `<span>${p.name}</span><span class="badge">${p.role}</span>`;
-        list.appendChild(card);
+    /* KADRO (9 KİŞİLİK ÇİMEN SAHA) */
+    function listenSquad() {
+      onValue(ref(db, "squad9"), (snapshot) => {
+        const dbSquad = snapshot.val();
+        if (!dbSquad) {
+          const initialObj = {};
+          DEFAULT_SQUAD_9.forEach((p) => { initialObj[p.id] = p; });
+          set(ref(db, "squad9"), initialObj);
+          currentSquad = [...DEFAULT_SQUAD_9];
+        } else {
+          currentSquad = DEFAULT_SQUAD_9.map((def) => ({
+            ...def,
+            ...(dbSquad[def.id] || {})
+          }));
+        }
+        renderSquadPitch();
       });
     }
 
-    window.unlockAdmin = () => {
-      const pass = document.getElementById("adminPassInput").value;
-      if (pass === ADMIN_SECRET_CODE) {
-        isAdminUnlocked = true;
-        document.getElementById("adminLockBox").classList.add("hidden");
-        document.getElementById("adminControls").classList.remove("hidden");
-        showStatus("adminStatus", "Yönetici paneli açıldı.", "success");
-      } else {
-        showStatus("adminStatus", "Hatalı yönetici şifresi!", "error");
-      }
+    function renderSquadPitch() {
+      const container = document.getElementById("pitchPlayersContainer");
+      const sideList = document.getElementById("squadSideList");
+      container.innerHTML = "";
+      sideList.innerHTML = "";
+
+      currentSquad.forEach((p) => {
+        const node = document.createElement("div");
+        node.className = `player-node ${squadEditMode && isAdmin ? "editable" : ""}`;
+        node.style.top = `${p.top}%`;
+        node.style.left = `${p.left}%`;
+        node.innerHTML = `
+          <div class="jersey">${p.number}</div>
+          <div class="player-tag">
+            <strong>${escapeHtml(p.name)}</strong>
+            <span>${escapeHtml(p.role)}</span>
+          </div>
+        `;
+        if (squadEditMode && isAdmin) {
+          node.onclick = () => openPlayerEditor(p.id);
+        }
+        container.appendChild(node);
+
+        const item = document.createElement("div");
+        item.className = "squad-item";
+        item.innerHTML = `
+          <div>
+            <strong style="color:#fff;">#${p.number} ${escapeHtml(p.name)}</strong>
+            <div style="font-size:0.75rem; color:var(--silver-muted);">${escapeHtml(p.role)}</div>
+          </div>
+          ${squadEditMode && isAdmin ? `<button type="button" class="btn btn-gold" style="padding:5px 10px; font-size:0.76rem;" onclick="openPlayerEditor('${p.id}')">Düzenle</button>` : ""}
+        `;
+        sideList.appendChild(item);
+      });
+    }
+
+    window.toggleSquadEditMode = () => {
+      if (!isAdmin) return;
+      squadEditMode = !squadEditMode;
+      document.getElementById("editModeHint").style.display = squadEditMode ? "inline" : "none";
+      document.getElementById("toggleEditModeBtn").textContent = squadEditMode
+        ? "✔ Düzenleme Modunu Kapat"
+        : "✏️ Kadro Düzenleme Modu";
+      if (!squadEditMode) cancelPlayerEdit();
+      renderSquadPitch();
     };
 
+    window.openPlayerEditor = (playerId) => {
+      if (!isAdmin || !squadEditMode) return;
+      const p = currentSquad.find((x) => x.id === playerId);
+      if (!p) return;
+      editingPlayerId = playerId;
+      document.getElementById("editingPlayerTitle").textContent = `Düzenleniyor: #${p.number}`;
+      document.getElementById("editPlayerName").value = p.name;
+      document.getElementById("editPlayerRole").value = p.role;
+      document.getElementById("playerEditorCard").classList.remove("hidden");
+    };
+
+    window.cancelPlayerEdit = () => {
+      editingPlayerId = null;
+      document.getElementById("playerEditorCard").classList.add("hidden");
+    };
+
+    window.savePlayerEdit = async () => {
+      if (!isAdmin || !editingPlayerId) return;
+      const name = document.getElementById("editPlayerName").value.trim() || "Oyuncu";
+      const role = document.getElementById("editPlayerRole").value.trim() || "Kadro";
+      await update(ref(db, `squad9/${editingPlayerId}`), { name, role });
+      cancelPlayerEdit();
+      showStatus("globalNotice", "Kadro bilgisi sahada güncellendi.", "success");
+    };
+
+    /* HABERLER */
+    document.getElementById("newsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!isAdmin || !currentProfile) return;
+      const title = document.getElementById("newsTitle").value.trim();
+      const body = document.getElementById("newsBody").value.trim();
+      if (!title || !body) return;
+
+      await push(ref(db, "news"), {
+        title,
+        body,
+        author: currentProfile.name,
+        date: new Date().toLocaleString("tr-TR")
+      });
+      e.target.reset();
+      showStatus("globalNotice", "Yeni kulüp haberi yayınlandı.", "success");
+    });
+
+    function listenNews() {
+      onValue(ref(db, "news"), (snapshot) => {
+        const grid = document.getElementById("newsGrid");
+        grid.innerHTML = "";
+        const data = snapshot.val();
+        if (!data) {
+          grid.innerHTML = '<p style="font-size:0.88rem; color:var(--silver-muted);">Henüz haber paylaşılmamış.</p>';
+          return;
+        }
+        const entries = Object.entries(data).reverse();
+        entries.forEach(([key, item]) => {
+          const card = document.createElement("article");
+          card.className = "news-card";
+          card.innerHTML = `
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.body)}</p>
+            <div class="news-meta">
+              <span>${escapeHtml(item.author || "Admin")} • ${escapeHtml(item.date || "")}</span>
+              ${isAdmin ? `<button type="button" class="btn btn-danger" style="padding:4px 9px; font-size:0.74rem;" onclick="deleteNews('${key}')">Sil</button>` : ""}
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    window.deleteNews = async (key) => {
+      if (!isAdmin) return;
+      await remove(ref(db, `news/${key}`));
+    };
+
+    /* ADMİN İŞLEMLERİ */
     window.clearAllChat = async () => {
-      if (!isAdminUnlocked) return;
+      if (!isAdmin) return;
       await remove(ref(db, "messages"));
-      showStatus("adminStatus", "Tüm sohbet mesajları silindi.", "success");
+      showStatus("globalNotice", "Tüm sohbet mesajları temizlendi.", "success");
     };
 
     function listenUsersForAdmin() {
@@ -734,22 +1231,22 @@
         const data = snapshot.val();
         if (!data) return;
         Object.values(data).forEach((u) => {
-          const card = document.createElement("div");
-          card.className = "squad-card";
-          card.innerHTML = `
+          const row = document.createElement("div");
+          row.className = "squad-item";
+          row.innerHTML = `
             <div>
-              <strong style="font-size:0.88rem;">${u.name}</strong>
-              <div style="font-size:0.75rem; color:var(--silver-muted);">${u.email}</div>
+              <strong style="color:#fff;">${escapeHtml(u.name)}</strong>
+              <div style="font-size:0.76rem; color:var(--silver-muted);">${escapeHtml(u.email)}</div>
             </div>
-            <span class="badge">${u.phone}</span>
+            <span class="admin-pill">${escapeHtml(u.phone || "Telefon Yok")}</span>
           `;
-          list.appendChild(card);
+          list.appendChild(row);
         });
       });
     }
 
     function escapeHtml(str) {
-      return str.replace(/[&<>"']/g, (c) => ({
+      return String(str).replace(/[&<>"']/g, (c) => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
       }[c]));
     }
