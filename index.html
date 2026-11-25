@@ -601,7 +601,7 @@
   </style>
 </head>
 <body>
-  <div class="version-badge">v3</div>
+  <div class="version-badge">v4</div>
 
   <!-- GİRİŞ / KAYIT EKRANI -->
   <div id="authWrapper" class="auth-wrapper">
@@ -633,6 +633,9 @@
           <input type="password" id="loginPassword" required placeholder="••••••••" />
         </div>
         <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn">Karargaha Giriş Yap</button>
+        <button type="button" class="btn btn-ghost btn-full" style="margin-top:8px; font-size:0.78rem;" id="resendVerifyBtn">
+          Doğrulama Mailini Tekrar Gönder
+        </button>
       </form>
 
       <form id="registerForm" class="hidden">
@@ -829,6 +832,7 @@
       createUserWithEmailAndPassword,
       signInWithEmailAndPassword,
       sendEmailVerification,
+      reload,
       signOut
     } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import {
@@ -853,9 +857,8 @@
       measurementId: "G-2DF2T5ETB6"
     };
 
-    // Yeni İman Power EmailJS hesabı ayarları
-    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S"; //[cite: 11]
-    const EMAILJS_SERVICE_ID = "service_kb4pte6"; // Yeni hesapta farklı bir service_... ID oluştuysa burayı güncelle
+    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S";
+    const EMAILJS_SERVICE_ID = "service_kb4pte6";
     const EMAILJS_TEMPLATE_ID = "template_vjvwe1g";
     const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
@@ -903,6 +906,9 @@
       if (code === "auth/invalid-email") {
         return "Geçerli bir Gmail adresi yazmalısın.";
       }
+      if (code === "auth/too-many-requests") {
+        return "Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.";
+      }
       return err?.message || "Bir hata oluştu.";
     }
 
@@ -933,7 +939,7 @@
         await signOut(auth);
         showStatus(
           "authStatus",
-          "Kayıt başarılı! Gmail kutuna (ve Spam klasörüne) doğrulama linki gönderildi. Linke tıkladıktan sonra giriş yap.",
+          "Kayıt başarılı! Gmail kutuna (ve Spam klasörüne) doğrulama linki gönderildi. Linke tıklamadan giriş yapılamaz.",
           "success"
         );
         e.target.reset();
@@ -946,6 +952,31 @@
       }
     });
 
+    document.getElementById("resendVerifyBtn").addEventListener("click", async () => {
+      const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+      const password = document.getElementById("loginPassword").value;
+
+      if (!email || !password) {
+        showStatus("authStatus", "Doğrulama mailini tekrar göndermek için önce Gmail ve şifreni yaz.", "error");
+        return;
+      }
+
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        await reload(cred.user);
+        if (cred.user.emailVerified) {
+          await signOut(auth);
+          showStatus("authStatus", "E-postan zaten doğrulanmış! Şimdi 'Karargaha Giriş Yap' butonuna basabilirsin.", "success");
+          return;
+        }
+        await sendEmailVerification(cred.user);
+        await signOut(auth);
+        showStatus("authStatus", "Doğrulama maili tekrar gönderildi. Gmail ve Spam kutunu kontrol et.", "success");
+      } catch (err) {
+        showStatus("authStatus", "Gönderim hatası: " + formatAuthError(err), "error");
+      }
+    });
+
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("loginSubmitBtn");
@@ -953,16 +984,17 @@
       const password = document.getElementById("loginPassword").value;
 
       btn.disabled = true;
-      btn.textContent = "Giriş yapılıyor...";
+      btn.textContent = "Kontrol ediliyor...";
 
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
+        await reload(cred.user);
 
         if (!cred.user.emailVerified) {
           await signOut(auth);
           showStatus(
             "authStatus",
-            "E-postan henüz doğrulanmamış! Lütfen Gmail kutundaki doğrulama linkine tıkla.",
+            "Giriş engellendi: E-postan henüz doğrulanmamış! Gmail kutundaki doğrulama linkine tıkla veya alttaki butondan tekrar gönder.",
             "error"
           );
           return;
@@ -984,6 +1016,7 @@
         }
 
         let mailNote = "";
+        let mailType = "success";
         try {
           await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
             to_email: profile.email,
@@ -993,14 +1026,16 @@
             player_phone: profile.phone,
             login_time: new Date().toLocaleString("tr-TR")
           });
-          mailNote = " Karşılama maili gönderildi.";
+          mailNote = " Hoş geldin maili Gmail adresine gönderildi.";
         } catch (mailErr) {
-          console.warn("EmailJS uyarısı:", mailErr);
+          const reason = mailErr?.text || mailErr?.message || "Şablon ayarını kontrol et";
+          mailNote = ` (Mail gönderilemedi: ${reason})`;
+          mailType = "error";
         }
 
         currentProfile = profile;
         isAdmin = (profile.email || email).toLowerCase() === ADMIN_EMAIL.toLowerCase();
-        enterApp(profile, mailNote);
+        enterApp(profile, mailNote, mailType);
       } catch (err) {
         showStatus("authStatus", "Giriş hatası: " + formatAuthError(err), "error");
       } finally {
@@ -1009,7 +1044,7 @@
       }
     });
 
-    function enterApp(profile, mailNote = "") {
+    function enterApp(profile, mailNote = "", mailType = "success") {
       document.getElementById("authWrapper").classList.add("hidden");
       document.getElementById("appShell").classList.remove("hidden");
       document.getElementById("activeUserSub").textContent = `${profile.name} • ${profile.phone}`;
@@ -1026,7 +1061,7 @@
       }
 
       if (mailNote) {
-        showStatus("globalNotice", "Karargaha giriş yapıldı." + mailNote, "success");
+        showStatus("globalNotice", "Karargaha giriş yapıldı." + mailNote, mailType);
       }
 
       listenChat();
