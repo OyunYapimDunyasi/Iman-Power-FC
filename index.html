@@ -9,7 +9,7 @@
     :root {
       --bg-dark: #030812;
       --bg-panel: rgba(9, 19, 36, 0.92);
-      --bg-card: rgba(16, 32, 58, 0.84);
+      --bg-card: rgba(16, 32, 58, 0.85);
       --bg-input: rgba(11, 24, 45, 0.96);
       --silver: #e2e8f0;
       --silver-muted: #94a3b8;
@@ -36,8 +36,8 @@
 
     body {
       background:
-        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.22), transparent 45%),
-        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.14), transparent 40%),
+        radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.24), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(56, 189, 248, 0.16), transparent 40%),
         linear-gradient(180deg, #061124 0%, var(--bg-dark) 100%);
       color: var(--silver);
       min-height: 100dvh;
@@ -67,63 +67,143 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 12px;
+      padding: 14px;
     }
 
     .auth-box {
       width: 100%;
-      max-width: 400px;
+      max-width: 410px;
       background: var(--bg-panel);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(16px);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.65);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
     }
 
     .brand-header {
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .logo-img {
-      width: 68px;
-      height: 68px;
+      width: 74px;
+      height: 74px;
       object-fit: cover;
       border-radius: 50%;
       border: 2px solid var(--silver);
-      box-shadow: 0 0 20px rgba(56, 189, 248, 0.28);
-      margin-bottom: 6px;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.32);
+      margin-bottom: 8px;
       display: inline-block;
     }
 
     .logo-fallback {
-      width: 68px;
-      height: 68px;
+      width: 74px;
+      height: 74px;
       border-radius: 50%;
       border: 2px solid var(--silver);
       background: linear-gradient(135deg, #1d4ed8, #071326);
       color: #fff;
       font-weight: 900;
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       letter-spacing: 2px;
       display: none;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 6px;
+      margin: 0 auto 8px;
     }
 
     .brand-header h1 {
-      font-size: 1.2rem;
+      font-size: 1.24rem;
       font-weight: 800;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.3px;
       color: #fff;
     }
 
     .brand-header p {
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       color: var(--silver-muted);
-      margin-top: 2px;
+      margin-top: 3px;
+    }
+
+    /* RAHATLATICI BEKLEME SALONU */
+    .lounge-wrapper {
+      min-height: 100dvh;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+      background:
+        radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.16), transparent 55%),
+        radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.12), transparent 50%);
+    }
+
+    .lounge-card {
+      width: 100%;
+      max-width: 520px;
+      background: rgba(10, 22, 42, 0.92);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(56, 189, 248, 0.32);
+      border-radius: 24px;
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+    }
+
+    .lounge-logo {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2.5px solid var(--accent);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.35);
+      margin-bottom: 14px;
+      animation: calmPulse 3.2s ease-in-out infinite;
+    }
+
+    @keyframes calmPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 24px rgba(56, 189, 248, 0.28); }
+      50% { transform: scale(1.04); box-shadow: 0 0 38px rgba(56, 189, 248, 0.5); }
+    }
+
+    .lounge-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #7dd3fc;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: dotBlink 1.6s infinite;
+    }
+
+    @keyframes dotBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.25; }
+    }
+
+    .lounge-info-box {
+      background: rgba(15, 31, 58, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin: 16px 0;
+      text-align: left;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      color: var(--silver);
     }
 
     /* UYGULAMA KABUĞU */
@@ -219,15 +299,30 @@
       font-size: 0.75rem;
     }
 
-    .admin-pill {
+    .pill {
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.67rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .pill-gold {
       background: rgba(251, 191, 36, 0.16);
       border: 1px solid var(--gold);
       color: var(--gold);
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 0.68rem;
-      font-weight: 800;
-      white-space: nowrap;
+    }
+
+    .pill-green {
+      background: rgba(34, 197, 94, 0.16);
+      border: 1px solid var(--success);
+      color: #86efac;
+    }
+
+    .pill-red {
+      background: rgba(239, 68, 68, 0.18);
+      border: 1px solid var(--danger);
+      color: #fca5a5;
     }
 
     .main-stage {
@@ -235,7 +330,7 @@
       width: 100%;
       max-width: 1180px;
       margin: 0 auto;
-      padding: 10px 12px 14px;
+      padding: 10px 12px 16px;
     }
 
     .panel {
@@ -289,7 +384,7 @@
       color: #fff;
     }
 
-    .form-group { margin-bottom: 8px; }
+    .form-group { margin-bottom: 9px; }
     label { display: block; font-size: 0.74rem; color: var(--silver-muted); margin-bottom: 3px; }
 
     input, textarea, select {
@@ -311,7 +406,7 @@
       border: none;
       border-radius: 8px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.79rem;
       cursor: pointer;
       transition: 0.16s;
     }
@@ -573,15 +668,29 @@
 
     .list-row {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      padding: 6px 8px;
-      border-radius: 8px;
+      padding: 8px 10px;
+      border-radius: 9px;
       background: var(--bg-input);
       border: 1px solid var(--border);
-      margin-bottom: 6px;
+      margin-bottom: 7px;
       font-size: 0.76rem;
+    }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mini-btn {
+      padding: 4px 8px;
+      font-size: 0.68rem;
+      border-radius: 6px;
     }
 
     /* HABERLER & MAÇLAR */
@@ -622,7 +731,7 @@
 
     .admin-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
       gap: 12px;
     }
 
@@ -630,7 +739,7 @@
   </style>
 </head>
 <body>
-  <div class="version-badge">v5</div>
+  <div class="version-badge">v6</div>
 
   <!-- GİRİŞ / KAYIT EKRANI -->
   <div id="authWrapper" class="auth-wrapper">
@@ -691,6 +800,42 @@
     </div>
   </div>
 
+  <!-- RAHATLATICI BEKLEME SALONU (ONAY BEKLEYEN OYUNCULAR İÇİN) -->
+  <div id="waitingLounge" class="lounge-wrapper hidden">
+    <div class="lounge-card">
+      <img
+        src="logo.jpeg"
+        alt="İman Power FC"
+        class="lounge-logo"
+        onerror="this.style.display='none'"
+      />
+      <div class="lounge-status-pill">
+        <span class="pulse-dot"></span>
+        <span>Yönetici Onayı Bekleniyor • Canlı Bağlantı Açık</span>
+      </div>
+      <h2 style="font-size:1.35rem; color:#fff; margin-bottom:6px;">
+        Hoş Geldin, <span id="loungePlayerName">Oyuncu</span>
+      </h2>
+      <p style="font-size:0.84rem; color:var(--silver-muted);">
+        İman Power FC Dijital Karargah Bekleme Salonundasın
+      </p>
+
+      <div class="lounge-info-box">
+        <p style="margin-bottom:8px;">
+          <strong style="color:#7dd3fc;">Durumun:</strong> Gmail doğrulaman başarıyla tamamlandı. Şu anda kulüp yöneticisinin onayını bekliyorsun.
+        </p>
+        <p style="margin-bottom:8px;">
+          <strong style="color:#86efac;">Otomatik Açılış:</strong> Yönetici onay verdiği anda bu ekran otomatik olarak kapanacak, karargah kapıları açılacak ve Gmail adresine resmi karşılama e-postan gönderilecektir.
+        </p>
+        <p style="color:var(--silver-muted); font-size:0.76rem;">
+          Kayıtlı Gmail: <span id="loungePlayerEmail">-</span>
+        </p>
+      </div>
+
+      <button type="button" class="btn btn-ghost" onclick="logoutUser()">Giriş Ekranına Dön</button>
+    </div>
+  </div>
+
   <!-- TAM EKRAN UYGULAMA -->
   <div id="appShell" class="app-shell hidden">
     <header class="topbar">
@@ -716,7 +861,7 @@
       </nav>
 
       <div class="user-area">
-        <span id="adminBadge" class="admin-pill hidden">ADMİN</span>
+        <span id="adminBadge" class="pill pill-gold hidden">ADMİN</span>
         <button type="button" class="btn btn-ghost" style="padding:5px 9px; font-size:0.74rem;" onclick="logoutUser()">Çıkış</button>
       </div>
     </header>
@@ -848,24 +993,24 @@
       <section id="viewAdmin" class="panel hidden">
         <div class="panel-top">
           <h2>🛡️ Yönetici Kontrol Merkezi</h2>
-          <span class="admin-pill">detaylibilgi3@gmail.com</span>
+          <span class="pill pill-gold">detaylibilgi3@gmail.com</span>
         </div>
 
         <div class="admin-grid">
           <div class="panel" style="padding:12px;">
-            <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Sohbet Yönetimi</h3>
-            <p style="font-size:0.76rem; color:var(--silver-muted); margin-bottom:8px;">
-              Karargah sohbetindeki tüm mesajları kalıcı olarak silebilirsin.
+            <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Sohbet & Kulüp Yönetimi</h3>
+            <p style="font-size:0.76rem; color:var(--silver-muted); margin-bottom:10px;">
+              Karargah sohbetindeki tüm mesajları kalıcı olarak temizleyebilirsin.
             </p>
             <button type="button" class="btn btn-danger" onclick="clearAllChat()">Tüm Sohbeti Temizle</button>
           </div>
 
           <div class="panel" style="padding:12px;">
-            <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Oyuncu Onay & Kayıt Listesi</h3>
+            <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Üye Onay, Ban & Çıkarma Merkezi</h3>
             <p style="font-size:0.74rem; color:var(--silver-muted); margin-bottom:8px;">
-              Onaylı oyuncular karargaha girebilir; onayı kapalı hesaplar engellenir.
+              <strong>Onayla</strong> dediğinde oyuncuya otomatik hoş geldin maili gider ve bekleme salonu açılır.
             </p>
-            <div id="adminUsersList" style="max-height:300px; overflow-y:auto;"></div>
+            <div id="adminUsersList" style="max-height:360px; overflow-y:auto;"></div>
           </div>
         </div>
       </section>
@@ -927,10 +1072,9 @@
       measurementId: "G-2DF2T5ETB6"
     };
 
-    // Yeni EmailJS hesabı bilgileri[cite: 8, 9, 10]
-    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S"; //[cite: 10]
-    const EMAILJS_SERVICE_ID = "service_om9trac"; //[cite: 8]
-    const EMAILJS_TEMPLATE_ID = "template_j2p3w3x"; //[cite: 9]
+    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S";
+    const EMAILJS_SERVICE_ID = "service_om9trac";
+    const EMAILJS_TEMPLATE_ID = "template_j2p3w3x";
     const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
@@ -971,6 +1115,8 @@
     let squadEditMode = false;
     let currentSquad = DEFAULT_SQUAD_9.map((x) => ({ ...x }));
     let editingPlayerId = null;
+    let unsubUserWatch = null;
+    let appInitialized = false;
 
     function showStatus(elId, message, type = "success") {
       const el = document.getElementById(elId);
@@ -993,12 +1139,23 @@
         return "Geçerli bir Gmail adresi yazmalısın.";
       }
       if (code === "auth/too-many-requests") {
-        return "Çok fazla istek gönderildi. Biraz bekleyip tekrar dene.";
+        return "Çok fazla deneme yapıldı. Biraz bekleyip tekrar dene.";
       }
       return "İşlem tamamlanamadı, bilgilerini kontrol et.";
     }
 
-    // KAYIT OL -> GİRİŞ EKRANINA OTOMATİK GEÇİŞ
+    async function sendWelcomeEmailToUser(userObj) {
+      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        to_email: userObj.email,
+        email: userObj.email,
+        player_name: userObj.name || "Oyuncu",
+        name: userObj.name || "Oyuncu",
+        player_phone: userObj.phone || "Telefon Yok",
+        login_time: new Date().toLocaleString("tr-TR")
+      });
+    }
+
+    // KAYIT OL -> GİRİŞ EKRANINA GEÇİŞ
     document.getElementById("registerForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("registerSubmitBtn");
@@ -1022,6 +1179,8 @@
           email,
           phone,
           approved: isAdminAccount ? true : false,
+          banned: false,
+          welcomeMailSent: isAdminAccount ? true : false,
           createdAt: new Date().toLocaleString("tr-TR")
         });
 
@@ -1031,7 +1190,7 @@
         document.getElementById("loginEmail").value = email;
         showStatus(
           "authStatus",
-          "Kayıt oluşturuldu! Gmail doğrulama linki gönderildi. Linke tıkla ve admin onayından sonra giriş yap.",
+          "Kayıt oluşturuldu! Gmail kutuna gelen doğrulama linkine tıkla, ardından giriş yaparak bekleme salonuna geç.",
           "success"
         );
       } catch (err) {
@@ -1061,7 +1220,7 @@
         await reload(cred.user);
         if (cred.user.emailVerified) {
           await signOut(auth);
-          showStatus("authStatus", "E-postan zaten doğrulanmış. Admin onayı tamamsa giriş yapabilirsin.", "success");
+          showStatus("authStatus", "E-postan zaten doğrulanmış! Şimdi 'Karargaha Giriş' butonuna basabilirsin.", "success");
           return;
         }
         await sendEmailVerification(cred.user);
@@ -1076,7 +1235,7 @@
       }
     });
 
-    // GİRİŞ YAP (E-POSTA DOĞRULAMA + ADMİN ONAYI ZORUNLU)
+    // GİRİŞ YAP (ONAYSIZSA BEKLEME SALONUNA ALIR, ONAYLANINCA OTOMATİK AÇAR)
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("loginSubmitBtn");
@@ -1084,7 +1243,7 @@
       const password = document.getElementById("loginPassword").value;
 
       btn.disabled = true;
-      btn.textContent = "Doğrulanıyor...";
+      btn.textContent = "Kontrol ediliyor...";
 
       try {
         const cred = await signInWithEmailAndPassword(auth, email, password);
@@ -1094,58 +1253,38 @@
           await signOut(auth);
           showStatus(
             "authStatus",
-            "E-posta doğrulaması yapılmamış! Gmail kutundaki linke tıkla veya tekrar mail gönder.",
+            "Gmail doğrulaman henüz tamamlanmamış. Gmail kutundaki linke tıkla veya alttan tekrar gönder.",
             "error"
           );
           return;
         }
 
         const adminCheck = email === ADMIN_EMAIL.toLowerCase();
+        const userRef = ref(db, `users/${cred.user.uid}`);
+        const snap = await get(userRef);
+
         let profile = {
+          uid: cred.user.uid,
           name: email.split("@")[0],
           email,
           phone: "Telefon Yok",
-          approved: adminCheck
+          approved: adminCheck,
+          banned: false
         };
 
-        const snap = await get(ref(db, `users/${cred.user.uid}`));
         if (snap.exists()) {
           profile = { ...profile, ...snap.val() };
-        } else if (adminCheck) {
-          await set(ref(db, `users/${cred.user.uid}`), profile);
+        } else {
+          await set(userRef, profile);
         }
 
-        if (!adminCheck && profile.approved !== true) {
+        if (!adminCheck && profile.banned === true) {
           await signOut(auth);
-          showStatus(
-            "authStatus",
-            "Hesabın henüz yönetici tarafından onaylanmamış. Onaylandıktan sonra giriş yapabilirsin.",
-            "error"
-          );
+          showStatus("authStatus", "Bu hesap yönetici tarafından kulüpten banlanmıştır.", "error");
           return;
         }
 
-        let mailNote = "";
-        let mailType = "success";
-        try {
-          await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-            to_email: profile.email,
-            email: profile.email,
-            player_name: profile.name,
-            name: profile.name,
-            player_phone: profile.phone,
-            login_time: new Date().toLocaleString("tr-TR")
-          });
-          mailNote = " Karşılama maili gönderildi.";
-        } catch (mailErr) {
-          const detail = mailErr?.text || mailErr?.message || "EmailJS şablonu kontrol edilmeli";
-          mailNote = ` (Mail gönderilemedi: ${detail})`;
-          mailType = "error";
-        }
-
-        currentProfile = profile;
-        isAdmin = adminCheck;
-        enterApp(profile, mailNote, mailType);
+        startLiveUserSession(cred.user.uid, profile, adminCheck);
       } catch (err) {
         try { await signOut(auth); } catch (_) {}
         showStatus("authStatus", formatAuthError(err), "error");
@@ -1155,47 +1294,90 @@
       }
     });
 
-    function enterApp(profile, mailNote = "", mailType = "success") {
-      document.getElementById("authWrapper").classList.add("hidden");
-      document.getElementById("appShell").classList.remove("hidden");
-      document.getElementById("activeUserSub").textContent = `${profile.name} • ${profile.phone}`;
-
-      document.getElementById("adminBadge").classList.toggle("hidden", !isAdmin);
-      document.getElementById("navAdmin").classList.toggle("hidden", !isAdmin);
-      document.getElementById("toggleEditModeBtn").classList.toggle("hidden", !isAdmin);
-      document.getElementById("formationSelect").classList.toggle("hidden", !isAdmin);
-      document.getElementById("editPinBtn").classList.toggle("hidden", !isAdmin);
-      document.getElementById("matchForm").classList.toggle("hidden", !isAdmin);
-      document.getElementById("newsForm").classList.toggle("hidden", !isAdmin);
-
-      if (!isAdmin) {
-        squadEditMode = false;
-        cancelPlayerEdit();
-        document.getElementById("editModeHint").style.display = "none";
+    // KULLANICI DURUMUNU CANLI İZLE (BEKLEME SALONU <-> KARARGAH OTOMATİK GEÇİŞ)
+    function startLiveUserSession(uid, initialProfile, adminCheck) {
+      if (unsubUserWatch) {
+        unsubUserWatch();
+        unsubUserWatch = null;
       }
 
-      if (mailNote) {
-        showStatus("globalNotice", "Karargaha hoş geldin." + mailNote, mailType);
-      }
+      unsubUserWatch = onValue(ref(db, `users/${uid}`), async (snapshot) => {
+        const liveData = snapshot.val();
 
-      listenPinned();
-      listenChat();
-      listenSquad();
-      listenMatches();
-      listenNews();
-      if (isAdmin) {
-        listenUsersForAdmin();
-      }
+        if (!liveData && !adminCheck) {
+          await forceExitToAuth("Hesabın yönetici tarafından kulüpten çıkarıldı.");
+          return;
+        }
+
+        const profile = { ...initialProfile, ...(liveData || {}) };
+
+        if (!adminCheck && profile.banned === true) {
+          await forceExitToAuth("Hesabın yönetici tarafından banlandı.");
+          return;
+        }
+
+        currentProfile = profile;
+        isAdmin = adminCheck;
+
+        if (!adminCheck && profile.approved !== true) {
+          // Onaylanmamışsa rahatlatıcı Bekleme Salonuna al
+          document.getElementById("authWrapper").classList.add("hidden");
+          document.getElementById("appShell").classList.add("hidden");
+          document.getElementById("waitingLounge").classList.remove("hidden");
+          document.getElementById("loungePlayerName").textContent = profile.name || "Oyuncu";
+          document.getElementById("loungePlayerEmail").textContent = profile.email || "";
+          return;
+        }
+
+        // Onaylı veya Admin ise Karargahı aç
+        document.getElementById("authWrapper").classList.add("hidden");
+        document.getElementById("waitingLounge").classList.add("hidden");
+        document.getElementById("appShell").classList.remove("hidden");
+        document.getElementById("activeUserSub").textContent = `${profile.name} • ${profile.phone}`;
+
+        document.getElementById("adminBadge").classList.toggle("hidden", !isAdmin);
+        document.getElementById("navAdmin").classList.toggle("hidden", !isAdmin);
+        document.getElementById("toggleEditModeBtn").classList.toggle("hidden", !isAdmin);
+        document.getElementById("formationSelect").classList.toggle("hidden", !isAdmin);
+        document.getElementById("editPinBtn").classList.toggle("hidden", !isAdmin);
+        document.getElementById("matchForm").classList.toggle("hidden", !isAdmin);
+        document.getElementById("newsForm").classList.toggle("hidden", !isAdmin);
+
+        if (!appInitialized) {
+          appInitialized = true;
+          listenPinned();
+          listenChat();
+          listenSquad();
+          listenMatches();
+          listenNews();
+          if (isAdmin) {
+            listenUsersForAdmin();
+          }
+        }
+      });
     }
 
-    window.logoutUser = async () => {
+    async function forceExitToAuth(msg = "") {
+      if (unsubUserWatch) {
+        unsubUserWatch();
+        unsubUserWatch = null;
+      }
       currentProfile = null;
       isAdmin = false;
+      appInitialized = false;
       squadEditMode = false;
       cancelPlayerEdit();
       await signOut(auth);
       document.getElementById("appShell").classList.add("hidden");
+      document.getElementById("waitingLounge").classList.add("hidden");
       document.getElementById("authWrapper").classList.remove("hidden");
+      if (msg) {
+        showStatus("authStatus", msg, "error");
+      }
+    }
+
+    window.logoutUser = async () => {
+      await forceExitToAuth("");
     };
 
     /* SABİT DUYURU & SOHBET */
@@ -1333,9 +1515,7 @@
         if (squadEditMode && isAdmin) {
           const editBtn = document.createElement("button");
           editBtn.type = "button";
-          editBtn.className = "btn btn-gold";
-          editBtn.style.padding = "3px 7px";
-          editBtn.style.fontSize = "0.68rem";
+          editBtn.className = "btn btn-gold mini-btn";
           editBtn.textContent = "Düzenle";
           editBtn.addEventListener("click", () => openPlayerEditor(p.id));
           item.appendChild(editBtn);
@@ -1431,9 +1611,7 @@
           ["Geliyorum", "Belki", "Gelemiyorum"].forEach((stateLabel) => {
             const b = document.createElement("button");
             b.type = "button";
-            b.className = stateLabel === "Geliyorum" ? "btn btn-success" : stateLabel === "Gelemiyorum" ? "btn btn-danger" : "btn btn-ghost";
-            b.style.padding = "4px 8px";
-            b.style.fontSize = "0.7rem";
+            b.className = stateLabel === "Geliyorum" ? "btn btn-success mini-btn" : stateLabel === "Gelemiyorum" ? "btn btn-danger mini-btn" : "btn btn-ghost mini-btn";
             b.textContent = stateLabel;
             b.addEventListener("click", async () => {
               if (!currentProfile) return;
@@ -1446,9 +1624,7 @@
           if (isAdmin) {
             const delBtn = document.createElement("button");
             delBtn.type = "button";
-            delBtn.className = "btn btn-danger";
-            delBtn.style.padding = "2px 7px";
-            delBtn.style.fontSize = "0.68rem";
+            delBtn.className = "btn btn-danger mini-btn";
             delBtn.textContent = "Sil";
             delBtn.addEventListener("click", () => remove(ref(db, `matches/${key}`)));
             card.querySelector(".info-meta").appendChild(delBtn);
@@ -1499,9 +1675,7 @@
           if (isAdmin) {
             const delBtn = document.createElement("button");
             delBtn.type = "button";
-            delBtn.className = "btn btn-danger";
-            delBtn.style.padding = "2px 7px";
-            delBtn.style.fontSize = "0.68rem";
+            delBtn.className = "btn btn-danger mini-btn";
             delBtn.textContent = "Sil";
             delBtn.addEventListener("click", () => remove(ref(db, `news/${key}`)));
             card.querySelector(".info-meta").appendChild(delBtn);
@@ -1511,7 +1685,7 @@
       });
     }
 
-    /* ADMİN ONAY & SOHBET TEMİZLEME */
+    /* ADMİN ONAY + OTOMATİK HOŞ GELDİN MAİLİ + BAN + SİSTEMDEN ÇIKARMA */
     window.clearAllChat = async () => {
       if (!isAdmin) return;
       await remove(ref(db, "messages"));
@@ -1528,6 +1702,7 @@
         Object.entries(data).forEach(([uid, u]) => {
           const isMainAdmin = (u.email || "").toLowerCase() === ADMIN_EMAIL.toLowerCase();
           const isApproved = isMainAdmin ? true : u.approved === true;
+          const isBanned = !isMainAdmin && u.banned === true;
 
           const row = document.createElement("div");
           row.className = "list-row";
@@ -1539,31 +1714,100 @@
           `;
 
           const actionWrap = document.createElement("div");
-          actionWrap.style.display = "flex";
-          actionWrap.style.alignItems = "center";
-          actionWrap.style.gap = "5px";
+          actionWrap.className = "admin-actions";
 
-          const badge = document.createElement("span");
-          badge.className = "admin-pill";
-          badge.textContent = isApproved ? "ONAYLI" : "BEKLIYOR";
-          actionWrap.appendChild(badge);
+          const statusPill = document.createElement("span");
+          if (isBanned) {
+            statusPill.className = "pill pill-red";
+            statusPill.textContent = "BANLI";
+          } else if (isApproved) {
+            statusPill.className = "pill pill-green";
+            statusPill.textContent = "ONAYLI";
+          } else {
+            statusPill.className = "pill pill-gold";
+            statusPill.textContent = "SALONDA BEKLİYOR";
+          }
+          actionWrap.appendChild(statusPill);
 
           if (!isMainAdmin) {
-            const toggleBtn = document.createElement("button");
-            toggleBtn.type = "button";
-            toggleBtn.className = isApproved ? "btn btn-danger" : "btn btn-success";
-            toggleBtn.style.padding = "3px 7px";
-            toggleBtn.style.fontSize = "0.68rem";
-            toggleBtn.textContent = isApproved ? "Onayı Kaldır" : "Onayla";
-            toggleBtn.addEventListener("click", async () => {
-              await update(ref(db, `users/${uid}`), { approved: !isApproved });
+            // 1) ONAYLA / ONAYI KALDIR (Onaylanınca otomatik hoş geldin maili gider)
+            const approveBtn = document.createElement("button");
+            approveBtn.type = "button";
+            approveBtn.className = isApproved ? "btn btn-ghost mini-btn" : "btn btn-success mini-btn";
+            approveBtn.textContent = isApproved ? "Onayı Al" : "Onayla";
+            approveBtn.addEventListener("click", async () => {
+              const nextApproved = !isApproved;
+              const updates = { approved: nextApproved };
+              if (nextApproved) updates.banned = false;
+
+              let mailFeedback = "";
+              if (nextApproved && u.welcomeMailSent !== true) {
+                try {
+                  await sendWelcomeEmailToUser(u);
+                  updates.welcomeMailSent = true;
+                  mailFeedback = " ve hoş geldin maili Gmail adresine gönderildi!";
+                } catch (err) {
+                  const errText = err?.text || err?.message || "EmailJS hatası";
+                  mailFeedback = ` (Ancak mail gönderilemedi: ${errText})`;
+                }
+              }
+
+              await update(ref(db, `users/${uid}`), updates);
               showStatus(
                 "globalNotice",
-                `${u.name} için onay durumu ${!isApproved ? "ONAYLANDI" : "KALDIRILDI"} olarak güncellendi.`,
-                "success"
+                `${u.name} ${nextApproved ? "onaylandı" : "bekleme salonuna alındı"}${mailFeedback}`,
+                mailFeedback.includes("gönderilemedi") ? "error" : "success"
               );
             });
-            actionWrap.appendChild(toggleBtn);
+            actionWrap.appendChild(approveBtn);
+
+            // 2) MANUEL HOŞ GELDİN MAİLİ TEKRAR GÖNDER
+            const mailBtn = document.createElement("button");
+            mailBtn.type = "button";
+            mailBtn.className = "btn btn-primary mini-btn";
+            mailBtn.textContent = "Mail At";
+            mailBtn.addEventListener("click", async () => {
+              try {
+                await sendWelcomeEmailToUser(u);
+                await update(ref(db, `users/${uid}`), { welcomeMailSent: true });
+                showStatus("globalNotice", `${u.name} (${u.email}) adresine hoş geldin maili gönderildi.`, "success");
+              } catch (err) {
+                const errText = err?.text || err?.message || "EmailJS hatası";
+                showStatus("globalNotice", `Mail gönderilemedi: ${errText}`, "error");
+              }
+            });
+            actionWrap.appendChild(mailBtn);
+
+            // 3) BANLA / BANI KALDIR
+            const banBtn = document.createElement("button");
+            banBtn.type = "button";
+            banBtn.className = isBanned ? "btn btn-gold mini-btn" : "btn btn-danger mini-btn";
+            banBtn.textContent = isBanned ? "Banı Aç" : "Banla";
+            banBtn.addEventListener("click", async () => {
+              const nextBan = !isBanned;
+              await update(ref(db, `users/${uid}`), {
+                banned: nextBan,
+                approved: nextBan ? false : isApproved
+              });
+              showStatus(
+                "globalNotice",
+                `${u.name} ${nextBan ? "kulüpten banlandı." : "banı kaldırıldı."}`,
+                nextBan ? "error" : "success"
+              );
+            });
+            actionWrap.appendChild(banBtn);
+
+            // 4) SİSTEMDEN ÇIKAR (KAYDI SİL)
+            const kickBtn = document.createElement("button");
+            kickBtn.type = "button";
+            kickBtn.className = "btn btn-danger mini-btn";
+            kickBtn.textContent = "Çıkar";
+            kickBtn.addEventListener("click", async () => {
+              if (!confirm(`${u.name} (${u.email}) kulüp sisteminden tamamen çıkarılsın mı?`)) return;
+              await remove(ref(db, `users/${uid}`));
+              showStatus("globalNotice", `${u.name} kulüp sisteminden çıkarıldı.`, "success");
+            });
+            actionWrap.appendChild(kickBtn);
           }
 
           row.appendChild(actionWrap);
