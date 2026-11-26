@@ -411,12 +411,17 @@
       transition: 0.16s;
     }
 
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .btn-full { width: 100%; }
     .btn-primary {
       background: linear-gradient(135deg, var(--accent-2), var(--accent));
       color: #fff;
     }
-    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-primary:hover:not(:disabled) { filter: brightness(1.08); }
 
     .btn-gold {
       background: linear-gradient(135deg, #d97706, var(--gold));
@@ -1077,7 +1082,14 @@
     const EMAILJS_TEMPLATE_ID = "template_j2p3w3x";
     const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
-    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    emailjs.init({
+      publicKey: EMAILJS_PUBLIC_KEY,
+      blockHeadless: false,
+      limitRate: {
+        id: "iman-power-fc",
+        throttle: 1500
+      }
+    });
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -1117,6 +1129,7 @@
     let editingPlayerId = null;
     let unsubUserWatch = null;
     let appInitialized = false;
+    const mailInFlight = new Set();
 
     function showStatus(elId, message, type = "success") {
       const el = document.getElementById(elId);
@@ -1145,14 +1158,29 @@
     }
 
     async function sendWelcomeEmailToUser(userObj) {
-      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-        to_email: userObj.email,
-        email: userObj.email,
-        player_name: userObj.name || "Oyuncu",
-        name: userObj.name || "Oyuncu",
-        player_phone: userObj.phone || "Telefon Yok",
-        login_time: new Date().toLocaleString("tr-TR")
-      });
+      const targetEmail = String(userObj?.email || "").trim().toLowerCase();
+      if (!targetEmail) {
+        throw new Error("Alıcı Gmail adresi boş");
+      }
+      const playerName = String(userObj?.name || targetEmail.split("@")[0] || "Oyuncu").trim();
+      const playerPhone = String(userObj?.phone || "Telefon Yok").trim();
+      const loginTime = new Date().toLocaleString("tr-TR");
+
+      const templateParams = {
+        to_email: targetEmail,
+        email: targetEmail,
+        player_name: playerName,
+        name: playerName,
+        player_phone: playerPhone,
+        login_time: loginTime
+      };
+
+      return await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
     }
 
     // KAYIT OL -> GİRİŞ EKRANINA GEÇİŞ
@@ -1320,7 +1348,6 @@
         isAdmin = adminCheck;
 
         if (!adminCheck && profile.approved !== true) {
-          // Onaylanmamışsa rahatlatıcı Bekleme Salonuna al
           document.getElementById("authWrapper").classList.add("hidden");
           document.getElementById("appShell").classList.add("hidden");
           document.getElementById("waitingLounge").classList.remove("hidden");
@@ -1329,7 +1356,6 @@
           return;
         }
 
-        // Onaylı veya Admin ise Karargahı aç
         document.getElementById("authWrapper").classList.add("hidden");
         document.getElementById("waitingLounge").classList.add("hidden");
         document.getElementById("appShell").classList.remove("hidden");
@@ -1730,25 +1756,31 @@
           actionWrap.appendChild(statusPill);
 
           if (!isMainAdmin) {
-            // 1) ONAYLA / ONAYI KALDIR (Onaylanınca otomatik hoş geldin maili gider)
+            // 1) ONAYLA / ONAYI KALDIR
             const approveBtn = document.createElement("button");
             approveBtn.type = "button";
             approveBtn.className = isApproved ? "btn btn-ghost mini-btn" : "btn btn-success mini-btn";
             approveBtn.textContent = isApproved ? "Onayı Al" : "Onayla";
             approveBtn.addEventListener("click", async () => {
+              if (mailInFlight.has(uid)) return;
               const nextApproved = !isApproved;
               const updates = { approved: nextApproved };
               if (nextApproved) updates.banned = false;
 
               let mailFeedback = "";
               if (nextApproved && u.welcomeMailSent !== true) {
+                mailInFlight.add(uid);
+                approveBtn.disabled = true;
                 try {
                   await sendWelcomeEmailToUser(u);
                   updates.welcomeMailSent = true;
-                  mailFeedback = " ve hoş geldin maili Gmail adresine gönderildi!";
+                  mailFeedback = " ve karşılama maili gönderildi!";
                 } catch (err) {
-                  const errText = err?.text || err?.message || "EmailJS hatası";
-                  mailFeedback = ` (Ancak mail gönderilemedi: ${errText})`;
+                  const errText = err?.text || err?.message || "EmailJS gönderim hatası";
+                  mailFeedback = ` (Mail gönderilemedi: ${errText})`;
+                } finally {
+                  mailInFlight.delete(uid);
+                  approveBtn.disabled = false;
                 }
               }
 
@@ -1761,19 +1793,25 @@
             });
             actionWrap.appendChild(approveBtn);
 
-            // 2) MANUEL HOŞ GELDİN MAİLİ TEKRAR GÖNDER
+            // 2) MANUEL HOŞ GELDİN MAİLİ GÖNDER
             const mailBtn = document.createElement("button");
             mailBtn.type = "button";
             mailBtn.className = "btn btn-primary mini-btn";
             mailBtn.textContent = "Mail At";
             mailBtn.addEventListener("click", async () => {
+              if (mailInFlight.has(uid)) return;
+              mailInFlight.add(uid);
+              mailBtn.disabled = true;
               try {
                 await sendWelcomeEmailToUser(u);
                 await update(ref(db, `users/${uid}`), { welcomeMailSent: true });
-                showStatus("globalNotice", `${u.name} (${u.email}) adresine hoş geldin maili gönderildi.`, "success");
+                showStatus("globalNotice", `${u.name} (${u.email}) adresine karşılama maili gönderildi.`, "success");
               } catch (err) {
-                const errText = err?.text || err?.message || "EmailJS hatası";
+                const errText = err?.text || err?.message || "EmailJS gönderim hatası";
                 showStatus("globalNotice", `Mail gönderilemedi: ${errText}`, "error");
+              } finally {
+                mailInFlight.delete(uid);
+                mailBtn.disabled = false;
               }
             });
             actionWrap.appendChild(mailBtn);
@@ -1797,7 +1835,7 @@
             });
             actionWrap.appendChild(banBtn);
 
-            // 4) SİSTEMDEN ÇIKAR (KAYDI SİL)
+            // 4) SİSTEMDEN ÇIKAR
             const kickBtn = document.createElement("button");
             kickBtn.type = "button";
             kickBtn.className = "btn btn-danger mini-btn";
