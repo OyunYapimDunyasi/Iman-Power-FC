@@ -744,7 +744,7 @@
   </style>
 </head>
 <body>
-  <div class="version-badge">v6</div>
+  <div class="version-badge">v7</div>
 
   <!-- GİRİŞ / KAYIT EKRANI -->
   <div id="authWrapper" class="auth-wrapper">
@@ -1013,7 +1013,7 @@
           <div class="panel" style="padding:12px;">
             <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Üye Onay, Ban & Çıkarma Merkezi</h3>
             <p style="font-size:0.74rem; color:var(--silver-muted); margin-bottom:8px;">
-              <strong>Onayla</strong> dediğinde oyuncuya otomatik hoş geldin maili gider ve bekleme salonu açılır.
+              <strong>Onayla</strong> dediğinde oyuncuya hoş geldin maili gönderilir ve bekleme salonu açılır; <strong>Mail At</strong> ile tekrar gönderim yapabilirsin.
             </p>
             <div id="adminUsersList" style="max-height:360px; overflow-y:auto;"></div>
           </div>
@@ -1077,9 +1077,9 @@
       measurementId: "G-2DF2T5ETB6"
     };
 
-    const EMAILJS_PUBLIC_KEY = "lp1Ttfq3UqY262_1S";
-    const EMAILJS_SERVICE_ID = "service_om9trac";
-    const EMAILJS_TEMPLATE_ID = "template_j2p3w3x";
+    const EMAILJS_PUBLIC_KEY = "jRukwmEqAxg2KHhxg";
+    const EMAILJS_SERVICE_ID = "service_i1qh71n";
+    const EMAILJS_TEMPLATE_ID = "template_v6nex97";
     const ADMIN_EMAIL = "detaylibilgi3@gmail.com";
 
     emailjs.init({
@@ -1087,7 +1087,7 @@
       blockHeadless: false,
       limitRate: {
         id: "iman-power-fc",
-        throttle: 1500
+        throttle: 1200
       }
     });
 
@@ -1711,7 +1711,7 @@
       });
     }
 
-    /* ADMİN ONAY + OTOMATİK HOŞ GELDİN MAİLİ + BAN + SİSTEMDEN ÇIKARMA */
+    /* ADMİN ONAY + OTOMATİK/TEKRAR HOŞ GELDİN MAİLİ + BAN + SİSTEMDEN ÇIKARMA */
     window.clearAllChat = async () => {
       if (!isAdmin) return;
       await remove(ref(db, "messages"));
@@ -1756,7 +1756,7 @@
           actionWrap.appendChild(statusPill);
 
           if (!isMainAdmin) {
-            // 1) ONAYLA / ONAYI KALDIR
+            // 1) ONAYLA / ONAYI KALDIR (Onaylanınca hoş geldin maili gider)
             const approveBtn = document.createElement("button");
             approveBtn.type = "button";
             approveBtn.className = isApproved ? "btn btn-ghost mini-btn" : "btn btn-success mini-btn";
@@ -1768,7 +1768,7 @@
               if (nextApproved) updates.banned = false;
 
               let mailFeedback = "";
-              if (nextApproved && u.welcomeMailSent !== true) {
+              if (nextApproved) {
                 mailInFlight.add(uid);
                 approveBtn.disabled = true;
                 try {
@@ -1793,7 +1793,7 @@
             });
             actionWrap.appendChild(approveBtn);
 
-            // 2) MANUEL HOŞ GELDİN MAİLİ GÖNDER
+            // 2) HOŞ GELDİN MAİLİ GÖNDER / TEKRAR GÖNDER
             const mailBtn = document.createElement("button");
             mailBtn.type = "button";
             mailBtn.className = "btn btn-primary mini-btn";
