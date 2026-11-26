@@ -260,7 +260,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 210px;
+      max-width: 240px;
     }
 
     .nav-tabs {
@@ -314,7 +314,7 @@
     }
 
     .pill-green {
-      background: rgba(34, 197, 94, 0.16);
+      background: rgba(34, 197, 94, 0.18);
       border: 1px solid var(--success);
       color: #86efac;
     }
@@ -677,12 +677,19 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      padding: 8px 10px;
-      border-radius: 9px;
+      padding: 9px 11px;
+      border-radius: 10px;
       background: var(--bg-input);
       border: 1px solid var(--border);
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       font-size: 0.76rem;
+    }
+
+    .status-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 5px;
     }
 
     .admin-actions {
@@ -744,7 +751,7 @@
   </style>
 </head>
 <body>
-  <div class="version-badge">v7</div>
+  <div class="version-badge">v8</div>
 
   <!-- GİRİŞ / KAYIT EKRANI -->
   <div id="authWrapper" class="auth-wrapper">
@@ -805,7 +812,7 @@
     </div>
   </div>
 
-  <!-- RAHATLATICI BEKLEME SALONU (ONAY BEKLEYEN OYUNCULAR İÇİN) -->
+  <!-- RAHATLATICI BEKLEME SALONU (MAİL DOĞRULAYIP GİRİŞ YAPAN AMA HENÜZ ONAYLANMAYANLAR İÇİN) -->
   <div id="waitingLounge" class="lounge-wrapper hidden">
     <div class="lounge-card">
       <img
@@ -816,7 +823,7 @@
       />
       <div class="lounge-status-pill">
         <span class="pulse-dot"></span>
-        <span>Yönetici Onayı Bekleniyor • Canlı Bağlantı Açık</span>
+        <span>Bekleme Salonu • Yönetici Onayı Bekleniyor</span>
       </div>
       <h2 style="font-size:1.35rem; color:#fff; margin-bottom:6px;">
         Hoş Geldin, <span id="loungePlayerName">Oyuncu</span>
@@ -827,10 +834,10 @@
 
       <div class="lounge-info-box">
         <p style="margin-bottom:8px;">
-          <strong style="color:#7dd3fc;">Durumun:</strong> Gmail doğrulaman başarıyla tamamlandı. Şu anda kulüp yöneticisinin onayını bekliyorsun.
+          <strong style="color:#86efac;">Mail Durumu:</strong> Gmail adresin doğrulandı.
         </p>
         <p style="margin-bottom:8px;">
-          <strong style="color:#86efac;">Otomatik Açılış:</strong> Yönetici onay verdiği anda bu ekran otomatik olarak kapanacak, karargah kapıları açılacak ve Gmail adresine resmi karşılama e-postan gönderilecektir.
+          <strong style="color:#fde68a;">Karargah Onayı:</strong> Henüz onaylanmadı. Yönetici onayladığı anda durumun <strong>Onaylandı</strong> olarak güncellenir ve bu ekran otomatik olarak karargaha açılır.
         </p>
         <p style="color:var(--silver-muted); font-size:0.76rem;">
           Kayıtlı Gmail: <span id="loungePlayerEmail">-</span>
@@ -853,7 +860,7 @@
         />
         <div>
           <div class="topbar-title">İMAN POWER FC</div>
-          <div class="topbar-sub" id="activeUserSub">Oyuncu</div>
+          <div class="topbar-sub" id="activeUserSub">Oyuncu • Onaylandı</div>
         </div>
       </div>
 
@@ -866,7 +873,7 @@
       </nav>
 
       <div class="user-area">
-        <span id="adminBadge" class="pill pill-gold hidden">ADMİN</span>
+        <span id="statusBadge" class="pill pill-green">Onaylandı</span>
         <button type="button" class="btn btn-ghost" style="padding:5px 9px; font-size:0.74rem;" onclick="logoutUser()">Çıkış</button>
       </div>
     </header>
@@ -1013,9 +1020,9 @@
           <div class="panel" style="padding:12px;">
             <h3 style="font-size:0.9rem; color:#fff; margin-bottom:6px;">Üye Onay, Ban & Çıkarma Merkezi</h3>
             <p style="font-size:0.74rem; color:var(--silver-muted); margin-bottom:8px;">
-              <strong>Onayla</strong> dediğinde oyuncuya hoş geldin maili gönderilir ve bekleme salonu açılır; <strong>Mail At</strong> ile tekrar gönderim yapabilirsin.
+              Kişinin mailini doğrulayıp doğrulamadığını ve karargah onay durumunu aşağıda net görebilirsin.
             </p>
-            <div id="adminUsersList" style="max-height:360px; overflow-y:auto;"></div>
+            <div id="adminUsersList" style="max-height:380px; overflow-y:auto;"></div>
           </div>
         </div>
       </section>
@@ -1206,6 +1213,7 @@
           name,
           email,
           phone,
+          emailVerified: isAdminAccount ? true : false,
           approved: isAdminAccount ? true : false,
           banned: false,
           welcomeMailSent: isAdminAccount ? true : false,
@@ -1218,7 +1226,7 @@
         document.getElementById("loginEmail").value = email;
         showStatus(
           "authStatus",
-          "Kayıt oluşturuldu! Gmail kutuna gelen doğrulama linkine tıkla, ardından giriş yaparak bekleme salonuna geç.",
+          "Kayıt oluşturuldu! Gmail kutuna gelen doğrulama linkine tıkla, ardından giriş yapınca bekleme salonuna gireceksin.",
           "success"
         );
       } catch (err) {
@@ -1247,8 +1255,9 @@
         const cred = await signInWithEmailAndPassword(auth, email, password);
         await reload(cred.user);
         if (cred.user.emailVerified) {
+          await update(ref(db, `users/${cred.user.uid}`), { emailVerified: true });
           await signOut(auth);
-          showStatus("authStatus", "E-postan zaten doğrulanmış! Şimdi 'Karargaha Giriş' butonuna basabilirsin.", "success");
+          showStatus("authStatus", "E-postan zaten onaylandı! Şimdi 'Karargaha Giriş' butonuna basabilirsin.", "success");
           return;
         }
         await sendEmailVerification(cred.user);
@@ -1263,7 +1272,7 @@
       }
     });
 
-    // GİRİŞ YAP (ONAYSIZSA BEKLEME SALONUNA ALIR, ONAYLANINCA OTOMATİK AÇAR)
+    // GİRİŞ YAP (MAİL ONAYLIYSA BEKLEME SALONUNA GİRER; SEN ONAYLAYINCA KARARGAHA GİRER)
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("loginSubmitBtn");
@@ -1281,7 +1290,7 @@
           await signOut(auth);
           showStatus(
             "authStatus",
-            "Gmail doğrulaman henüz tamamlanmamış. Gmail kutundaki linke tıkla veya alttan tekrar gönder.",
+            "Mailini henüz onaylamamışsın! Gmail kutundaki doğrulama linkine tıkla, sonra tekrar giriş yap.",
             "error"
           );
           return;
@@ -1296,12 +1305,14 @@
           name: email.split("@")[0],
           email,
           phone: "Telefon Yok",
+          emailVerified: true,
           approved: adminCheck,
           banned: false
         };
 
         if (snap.exists()) {
-          profile = { ...profile, ...snap.val() };
+          profile = { ...profile, ...snap.val(), emailVerified: true };
+          await update(userRef, { emailVerified: true });
         } else {
           await set(userRef, profile);
         }
@@ -1322,7 +1333,7 @@
       }
     });
 
-    // KULLANICI DURUMUNU CANLI İZLE (BEKLEME SALONU <-> KARARGAH OTOMATİK GEÇİŞ)
+    // KULLANICI DURUMUNU CANLI İZLE
     function startLiveUserSession(uid, initialProfile, adminCheck) {
       if (unsubUserWatch) {
         unsubUserWatch();
@@ -1346,8 +1357,9 @@
 
         currentProfile = profile;
         isAdmin = adminCheck;
+        const isApproved = adminCheck || profile.approved === true;
 
-        if (!adminCheck && profile.approved !== true) {
+        if (!isApproved) {
           document.getElementById("authWrapper").classList.add("hidden");
           document.getElementById("appShell").classList.add("hidden");
           document.getElementById("waitingLounge").classList.remove("hidden");
@@ -1359,9 +1371,12 @@
         document.getElementById("authWrapper").classList.add("hidden");
         document.getElementById("waitingLounge").classList.add("hidden");
         document.getElementById("appShell").classList.remove("hidden");
-        document.getElementById("activeUserSub").textContent = `${profile.name} • ${profile.phone}`;
+        document.getElementById("activeUserSub").textContent = `${profile.name} • Onaylandı`;
 
-        document.getElementById("adminBadge").classList.toggle("hidden", !isAdmin);
+        const badge = document.getElementById("statusBadge");
+        badge.className = isAdmin ? "pill pill-gold" : "pill pill-green";
+        badge.textContent = isAdmin ? "ADMİN • Onaylandı" : "Onaylandı";
+
         document.getElementById("navAdmin").classList.toggle("hidden", !isAdmin);
         document.getElementById("toggleEditModeBtn").classList.toggle("hidden", !isAdmin);
         document.getElementById("formationSelect").classList.toggle("hidden", !isAdmin);
@@ -1711,7 +1726,7 @@
       });
     }
 
-    /* ADMİN ONAY + OTOMATİK/TEKRAR HOŞ GELDİN MAİLİ + BAN + SİSTEMDEN ÇIKARMA */
+    /* ADMİN ONAY + BELİRGİN DURUM GÖSTERİMİ + BAN + SİSTEMDEN ÇIKARMA */
     window.clearAllChat = async () => {
       if (!isAdmin) return;
       await remove(ref(db, "messages"));
@@ -1727,36 +1742,39 @@
 
         Object.entries(data).forEach(([uid, u]) => {
           const isMainAdmin = (u.email || "").toLowerCase() === ADMIN_EMAIL.toLowerCase();
+          const isMailVerified = isMainAdmin ? true : u.emailVerified === true;
           const isApproved = isMainAdmin ? true : u.approved === true;
           const isBanned = !isMainAdmin && u.banned === true;
 
           const row = document.createElement("div");
           row.className = "list-row";
+
+          const mailBadgeHtml = isMailVerified
+            ? `<span class="pill pill-green">Mail: Onaylandı</span>`
+            : `<span class="pill pill-gold">Mail: Bekleniyor</span>`;
+
+          const clubBadgeHtml = isBanned
+            ? `<span class="pill pill-red">Banlandı</span>`
+            : isApproved
+              ? `<span class="pill pill-green">Onaylandı</span>`
+              : `<span class="pill pill-gold">Onaylanmadı</span>`;
+
           row.innerHTML = `
             <div>
               <strong style="color:#fff;">${escapeHtml(u.name)}</strong>
               <div style="font-size:0.68rem; color:var(--silver-muted);">${escapeHtml(u.email)} • ${escapeHtml(u.phone || "Telefon Yok")}</div>
+              <div class="status-line">
+                ${mailBadgeHtml}
+                ${clubBadgeHtml}
+              </div>
             </div>
           `;
 
           const actionWrap = document.createElement("div");
           actionWrap.className = "admin-actions";
 
-          const statusPill = document.createElement("span");
-          if (isBanned) {
-            statusPill.className = "pill pill-red";
-            statusPill.textContent = "BANLI";
-          } else if (isApproved) {
-            statusPill.className = "pill pill-green";
-            statusPill.textContent = "ONAYLI";
-          } else {
-            statusPill.className = "pill pill-gold";
-            statusPill.textContent = "SALONDA BEKLİYOR";
-          }
-          actionWrap.appendChild(statusPill);
-
           if (!isMainAdmin) {
-            // 1) ONAYLA / ONAYI KALDIR (Onaylanınca hoş geldin maili gider)
+            // 1) ONAYLA / ONAYI KALDIR
             const approveBtn = document.createElement("button");
             approveBtn.type = "button";
             approveBtn.className = isApproved ? "btn btn-ghost mini-btn" : "btn btn-success mini-btn";
@@ -1787,7 +1805,7 @@
               await update(ref(db, `users/${uid}`), updates);
               showStatus(
                 "globalNotice",
-                `${u.name} ${nextApproved ? "onaylandı" : "bekleme salonuna alındı"}${mailFeedback}`,
+                `${u.name} için durum: ${nextApproved ? "Onaylandı" : "Onaylanmadı"}${mailFeedback}`,
                 mailFeedback.includes("gönderilemedi") ? "error" : "success"
               );
             });
