@@ -353,6 +353,8 @@
     }
 
     .panel {
+      width: 100%;
+      max-width: 100%;
       background: var(--bg-panel);
       backdrop-filter: blur(12px);
       border: 1px solid var(--border);
@@ -408,6 +410,7 @@
 
     input, textarea, select {
       width: 100%;
+      max-width: 100%;
       padding: 8px 11px;
       border-radius: 8px;
       border: 1px solid var(--border);
@@ -418,7 +421,7 @@
     }
 
     input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-    textarea { min-height: 68px; resize: vertical; }
+    textarea { min-height: 92px; resize: vertical; }
 
     .btn {
       padding: 8px 12px;
@@ -472,6 +475,7 @@
       font-size: 0.78rem;
       display: none;
       line-height: 1.38;
+      overflow-wrap: anywhere;
     }
     .status-msg.show { display: block; }
     .status-msg.error { background: rgba(239, 68, 68, 0.18); border: 1px solid var(--danger); color: #fecaca; }
@@ -536,7 +540,7 @@
     }
 
     .msg.admin-msg .msg-head { color: var(--gold); }
-    .msg-body { font-size: 0.85rem; color: #fff; word-break: break-word; }
+    .msg-body { font-size: 0.85rem; color: #fff; overflow-wrap: anywhere; }
 
     .chat-form { display: flex; gap: 7px; }
     .chat-form input { flex: 1; }
@@ -736,11 +740,53 @@
       border-radius: 6px;
     }
 
-    /* HABERLER / GAZETE & MAÇLAR */
+    /* MAÇLAR KARTLARI */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
       gap: 10px;
+    }
+
+    /* GAZETE: HERKESTE BİREBİR AYNI BİÇİM, ALT ALTA AYRILMIŞ VE TAŞMASIZ */
+    .newspaper-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .newspaper-card {
+      width: 100%;
+      max-width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .newspaper-title {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 800;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    .newspaper-body {
+      color: var(--silver);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-width: 100%;
     }
 
     .info-card {
@@ -751,27 +797,31 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      min-width: 0;
     }
 
     .news-img {
       width: 100%;
-      max-height: 185px;
+      max-width: 100%;
+      max-height: 280px;
       object-fit: cover;
-      border-radius: 9px;
+      border-radius: 10px;
       border: 1px solid var(--border);
+      display: block;
     }
 
-    .info-card h3 { color: #fff; font-size: 0.94rem; }
-    .info-card p { color: var(--silver); font-size: 0.82rem; line-height: 1.42; }
+    .info-card h3 { color: #fff; font-size: 0.94rem; overflow-wrap: anywhere; }
+    .info-card p { color: var(--silver); font-size: 0.82rem; line-height: 1.42; overflow-wrap: anywhere; }
     .info-meta {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       gap: 6px;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--silver-muted);
       border-top: 1px solid var(--border);
-      padding-top: 6px;
+      padding-top: 8px;
     }
 
     .rsvp-row {
@@ -1062,17 +1112,17 @@
       <section id="viewNews" class="panel hidden">
         <div class="panel-top">
           <h2>📰 İman Power FC Gazetesi — Haberler & Duyurular</h2>
-          <span style="font-size:0.75rem; color:var(--silver-muted);">JPG / Görsel Destekli Bülten</span>
+          <span style="font-size:0.75rem; color:var(--silver-muted);">Birebir Biçim • Alt Alta Düzen</span>
         </div>
 
-        <form id="newsForm" class="hidden" style="margin-bottom:12px; background:var(--bg-input); padding:11px; border-radius:10px; border:1px solid var(--border);">
+        <form id="newsForm" class="hidden" style="margin-bottom:14px; background:var(--bg-input); padding:12px; border-radius:12px; border:1px solid var(--border);">
           <h3 style="font-size:0.84rem; color:var(--gold); margin-bottom:7px;">➕ Gazeteye Yeni Haber & JPG Ekle (Admin)</h3>
           <div class="form-group">
             <label>Haber Başlığı *</label>
             <input type="text" id="newsTitle" required placeholder="Haber başlığı..." />
           </div>
           <div class="form-group">
-            <label>Haber Detayı *</label>
+            <label>Haber Detayı (Nasıl yazarsan satır ve paragraflarıyla öyle görünür) *</label>
             <textarea id="newsBody" required placeholder="Duyuru veya haber içeriği..."></textarea>
           </div>
           <div class="admin-grid">
@@ -1091,7 +1141,7 @@
           <button type="submit" class="btn btn-primary">Haberi Gazetede Yayınla</button>
         </form>
 
-        <div class="cards-grid" id="newsGrid"></div>
+        <div class="newspaper-stack" id="newsGrid"></div>
       </section>
 
       <!-- YÖNETİCİ PANELİ -->
@@ -1849,7 +1899,7 @@
       });
     }
 
-    /* GAZETE / HABERLER (JPG / GÖRSEL YÜKLEME) */
+    /* GAZETE / HABERLER (JPG / GÖRSEL YÜKLEME + BİREBİR DÜZEN) */
     function compressImageToDataUrl(file, maxWidth = 820, quality = 0.72) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -1894,9 +1944,9 @@
       e.preventDefault();
       if (!isAdmin || !currentProfile) return;
       const title = document.getElementById("newsTitle").value.trim();
-      const body = document.getElementById("newsBody").value.trim();
+      const body = document.getElementById("newsBody").value;
       const urlInput = document.getElementById("newsImageUrl").value.trim();
-      if (!title || !body) return;
+      if (!title || !body.trim()) return;
 
       const finalImage = selectedNewsImageData || urlInput || "";
 
@@ -1932,15 +1982,15 @@
         }
         entries.reverse().forEach(([key, item]) => {
           const card = document.createElement("article");
-          card.className = "info-card";
+          card.className = "newspaper-card";
           const imgHtml = item.image
             ? `<img src="${escapeAttr(item.image)}" alt="${escapeAttr(item.title)}" class="news-img" onerror="this.style.display='none'" />`
             : "";
 
           card.innerHTML = `
             ${imgHtml}
-            <h3>${escapeHtml(item.title)}</h3>
-            <p>${escapeHtml(item.body)}</p>
+            <div class="newspaper-title">${escapeHtml(item.title)}</div>
+            <div class="newspaper-body">${escapeHtml(item.body)}</div>
             <div class="info-meta">
               <span>${escapeHtml(item.author || "Admin")} • ${escapeHtml(item.date || "")}</span>
             </div>
